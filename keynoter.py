@@ -63,7 +63,6 @@ prompts = [
     """
 ]
 
-]
 
 model = genai.GenerativeModel(model_name="gemini-1.5-pro-latest",
                               generation_config=generation_config,
