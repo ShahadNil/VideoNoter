@@ -4,7 +4,7 @@ import google.generativeai as genai
 import os
 import time
 import tempfile
-os.environ["GEMINI_API_KEY"] = st.secrets['GEMINI_API_KEY']
+os.environ["GEMINI_API_KEY"] = 'AIzaSyC6XZZpQZ2uGgmtYakbY2-1wP37r2Kq7WE'
 genai.configure(api_key=os.environ["GEMINI_API_KEY"] )
 responses = None
 file_name = None
