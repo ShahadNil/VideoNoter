@@ -206,4 +206,4 @@ generating.empty()
 st.write(responses.text)
 os.remove(path)
 
-genai.delete_file(video.name)
+genai.delete_file(video_obj.name)
