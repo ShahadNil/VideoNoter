@@ -48,7 +48,7 @@ prompts = [
       2. Always provide a HEADLINE based on the whole lecture. Carefully choose the headline , because it represents the whole lecture in very brief.
       3. Write in different segments and under sub-headers. Every sub-header should include the detailed informations related to it.
       4. Use bullet points and numbering points where needed. Give detailed information about each point . Unnecessary using of bullet points and numbering points are prohibitted.
-      5. Use mathemetical markdown formats to show a clear mathemetical equations and answers.
+      5. Use latex formats to show a clear mathemetical equations and answers.
       6. Write every detail you need to satisfy the task. You can write upto 10000 words , so do not hesitate using more words.. 
       7. Act as a professional , do not include casual words.
       8. Take informations from visuals and audio when the visual is related the main topic. If the visuals are not related to the main lecture, ignore it
@@ -64,7 +64,7 @@ prompts = [
       3. Write down important key notes of each topic. It should be detailed.
       4. If the lecture covers different parts , divide them into different segments.
       5. Your main responsibility is to provide a note of the long lecture , which note contains every detail covered in the lecture .
-      6. Mention time stamps or speaker name or number(if provided) to ensure the sources of information.
+      6. Mention time stamps or speaker name or number(if provided) or source name to ensure the sources of information.
     """
 ]
 
