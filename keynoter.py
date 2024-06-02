@@ -129,19 +129,19 @@ with place.container():
                 if yt.streams.filter(res="720p", progressive=True).first() is not None:
                     video = yt.streams.filter(res="720p", progressive=True).first()
                     res = st.success("**720p stream found!**")
-                else:
+                elif yt.streams.filter(res="480p", progressive=True).first() is not None:
                     video = yt.streams.filter(res="480p", progressive=True).first()
-                    if video is None:
-                        video = yt.streams.filter(res="360p", progressive=True).first()
-                        if video is None:
-                            st.error("**No suitable video resolution found.**")
-                        else:
-                            res = st.success("**360p stream found!**")
-                    else:
-                        res = st.success("**480p stream found!**")
+                    res = st.success("**480p stream found!**")
+                elif yt.streams.filter(res="360p", progressive=True).first() is not None:
+                    video = yt.streams.filter(res="360p", progressive=True).first()
+                    res = st.success("**360p stream found!**")
+                else:
+                    st.error("**No suitable video resolution found.**")
+                    st.stop()
+                        
                 if video:
                     try:
-                      video_title = yt.title  # Retrieve the video title
+                      video_title = yt.title 
                       sanitized_title = sanitize_title(video_title)
                       path = f"{sanitized_title}.mp4"
                       downloading = st.success("**Downloading on progress..**")
@@ -152,8 +152,10 @@ with place.container():
                       pass
                     except Exception as e:
                        st.error(e)
+                       st.stop()
             except Exception as e:
                 st.error(e)
+                st.stop()
             
       else:
          st.stop()
@@ -161,8 +163,6 @@ with place.container():
 
   else:
      st.stop()
-
-  
  
 
   submit_button = st.button("Done")
