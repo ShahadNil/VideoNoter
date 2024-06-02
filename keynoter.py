@@ -64,6 +64,7 @@ prompts = [
       3. Write down important key notes of each topic. It should be detailed.
       4. If the lecture covers different parts , divide them into different segments.
       5. Your main responsibility is to provide a note of the long lecture , which note contains every detail covered in the lecture .
+      6. Mention time stamps or speaker name or number(if provided) to ensure the sources of information.
     """
 ]
 
