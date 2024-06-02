@@ -125,17 +125,22 @@ with place.container():
       video_url = st.text_input("**Enter your Youtube Video URL**")
       if video_url !="" and video_url.startswith("https://www.youtube.com/watch?v="):
             try:
+                retrive = st.success("**Checking your video**")
                 yt = YouTube(video_url)
                 if yt.streams.filter(res="720p", progressive=True).first() is not None:
                     video = yt.streams.filter(res="720p", progressive=True).first()
+                    retrive.empty()
                     res = st.success("**720p stream found!**")
                 elif yt.streams.filter(res="480p", progressive=True).first() is not None:
                     video = yt.streams.filter(res="480p", progressive=True).first()
+                    retrive.empty()
                     res = st.success("**480p stream found!**")
                 elif yt.streams.filter(res="360p", progressive=True).first() is not None:
                     video = yt.streams.filter(res="360p", progressive=True).first()
+                    retrive.empty()
                     res = st.success("**360p stream found!**")
                 else:
+                    retrive.empty()
                     st.error("**No suitable video resolution found.**")
                     st.stop()
                         
