@@ -51,7 +51,8 @@ prompts = [
       5. Use latex formats to show a clear mathemetical equations and answers.
       6. Write every detail you need to satisfy the task. You can write upto 10000 words , so do not hesitate using more words.. 
       7. Act as a professional , do not include casual words.
-      8. Take informations from visuals and audio when the visual is related the main topic. If the visuals are not related to the main lecture, ignore it
+      8. Take informations from visuals and audio when the visual is related the main topic. If the visuals are not related to the main lecture, ignore it.
+      9. You can use different colors using markdown to indicate the importance of a topic or a word.
       
       DO NOT:
       1. Do not use your words, don't add any information yourself. Use informations covered in the lecture.
