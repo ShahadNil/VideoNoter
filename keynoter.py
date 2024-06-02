@@ -4,10 +4,14 @@ import google.generativeai as genai
 import os
 import time
 import tempfile
+from pytube import YouTube
+import re
+
 os.environ["GEMINI_API_KEY"] = 'AIzaSyC6XZZpQZ2uGgmtYakbY2-1wP37r2Kq7WE'
 genai.configure(api_key=os.environ["GEMINI_API_KEY"] )
 responses = None
 file_name = None
+video = None
 generation_config = {
   "temperature": 0.2,
   "top_p": 0.95,
@@ -83,7 +87,8 @@ def wait_for_files_active(file):
   if file_need.state.name != "ACTIVE":
     st.error(f"File {file.name} failed to process")
 
-
+def sanitize_title(title):
+    return re.sub(r'[\\/*?:"<>|]', "", title)
 
 st.set_page_config(page_title="Keynoter", page_icon='📝',layout="wide" )
 place = st.empty()
@@ -100,24 +105,82 @@ with place.container():
   )
 
   st.markdown('<h2 class="centered-title">Note Your Lecture</h2>', unsafe_allow_html=True) 
-  uploader = st.file_uploader('Upload the lecture video', type=['mp4', 'mkv'])
-  if uploader:
-      pass
+  options = st.radio("**Select an Option**", ["Upload a video file", "Directly from youtube link"])
+  if options == "Upload a video file":
+     uploader = st.file_uploader('Upload the lecture video', type=['mp4', 'mkv'])
+     if uploader:
+        temp_dir = tempfile.mkdtemp(prefix="gemini")
+        path = os.path.join(temp_dir, uploader.name)
+        with open(path, "wb") as f:
+          f.write(uploader.getvalue())
+        st.sidebar.video(path)
+        pass
+     else:
+        st.stop()
+
+
+
+
+  elif options == "Directly from youtube link":
+      video_url = st.text_input("**Enter your Youtube Video URL**")
+      if video_url !="" and video_url.startswith("https://www.youtube.com/watch?v="):
+            try:
+                yt = YouTube(video_url)
+                if yt.streams.filter(res="720p", progressive=True).first() is not None:
+                    video = yt.streams.filter(res="720p", progressive=True).first()
+                    res = st.success("**720p stream found!**")
+                else:
+                    video = yt.streams.filter(res="480p", progressive=True).first()
+                    if video is None:
+                        video = yt.streams.filter(res="360p", progressive=True).first()
+                        if video is None:
+                            st.error("**No suitable video resolution found.**")
+                        else:
+                            res = st.success("**360p stream found!**")
+                    else:
+                        res = st.success("**480p stream found!**")
+                if video:
+                    try:
+                      video_title = yt.title  # Retrieve the video title
+                      sanitized_title = sanitize_title(video_title)
+                      path = f"{sanitized_title}.mp4"
+                      downloading = st.success("**Downloading on progress..**")
+                      video.download(filename=path)
+                      res.empty()
+                      downloading.empty()
+                      st.sidebar.video(path)
+                      pass
+                    except Exception as e:
+                       st.error(e)
+            except Exception as e:
+                st.error(e)
+            
+      else:
+         st.stop()
+
+
+  else:
+     st.stop()
+
+  
+ 
+
+  submit_button = st.button("Done")
+  if submit_button:
+        pass
   else:
       st.stop()
 
-
 place.empty()
-success = st.warning("**Wait a few moments to process the video**")
-temp_dir = tempfile.mkdtemp(prefix="gemini")
-path = os.path.join(temp_dir, uploader.name)
-with open(path, "wb") as f:
-  f.write(uploader.getvalue())
 
-st.sidebar.video(path)
+
+
+
+success = st.warning("**Wait a few moments to process the video**")
+
 try:
-  video =  upload_to_gemini(path)
-  wait_for_files_active(video)
+  video_obj =  upload_to_gemini(path)
+  wait_for_files_active(video_obj)
 except Exception as e:
   st.error(e)
 
@@ -128,7 +191,7 @@ chat_session = model.start_chat(
     {
       "role": "user",
       "parts": [
-        video,
+        video_obj,
       ],
     },
   ]
