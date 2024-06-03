@@ -66,6 +66,7 @@ prompts = [
       4. If the lecture covers different parts , divide them into different segments.
       5. Your main responsibility is to provide a note of the long lecture , which note contains every detail covered in the lecture .
       6. Mention time stamps or speaker name (if mentioned) or source name to ensure the sources of information.
+      7. If the video covers maths and equations, at the end provide the total equation together.
     """
 ]
 
