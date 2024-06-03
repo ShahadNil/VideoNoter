@@ -53,6 +53,7 @@ prompts = [
       7. Act as a professional , do not include casual words.
       8. Take informations from visuals and audio when the visual is related the main topic. If the visuals are not related to the main lecture, ignore it.
       9. Names used in the whole note should be italic (*NAME*).
+      10. You can provide links (if mentioned) using markdown [LINK_NAME](LINK)
       
       DO NOT:
       1. Do not use your words, don't add any information yourself. Use informations covered in the lecture.
@@ -66,7 +67,6 @@ prompts = [
       4. If the lecture covers different parts , divide them into different segments.
       5. Your main responsibility is to provide a note of the long lecture , which note contains every detail covered in the lecture .
       6. Mention time stamps or speaker name (if mentioned) or source name to ensure the sources of information.
-      7. If the video covers maths and equations, at the end provide the equation from the begining to the end.
     """
 ]
 
