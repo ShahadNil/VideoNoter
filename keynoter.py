@@ -10,7 +10,7 @@ import re
 
 genai.configure(api_key='AIzaSyC6XZZpQZ2uGgmtYakbY2-1wP37r2Kq7WE')
 responses = None
-file_name = None
+file_name= None
 video = None
 generation_config = {
   "temperature": 0.2,
@@ -81,7 +81,7 @@ def upload_to_gemini(path, mime_type=None):
 
 
 def wait_for_files_active(file):
-  file_need = genai.get_file(file.name)
+  file_need= genai.get_file(file.name)
   while file_need.state.name == "PROCESSING":
     print(".", end="", flush=True)
     time.sleep(10)
@@ -147,7 +147,8 @@ with place.container():
 
   elif options == "Directly from youtube link":
       video_url = st.text_input("**Enter your Youtube Video URL**")
-      if video_url !="" and video_url.startswith("https://www.youtube.com/watch?v="):
+      button = st.button("Submit")
+      if video_url !="" and video_url.startswith("https://www.youtube.com/watch?v=") and button:
             try:
                 retrive = st.success("**Checking your video**")
                 yt = YouTube(video_url)
