@@ -8,7 +8,7 @@ from pytube import YouTube
 import re
 
 
-genai.configure(api_key='AIzaSyC6XZZpQZ2uGgmtYakbY2-1wP37r2Kq7W')
+genai.configure(api_key='AIzaSyC6XZZpQZ2uGgmtYakbY2-1wP37r2Kq7WE')
 responses = None
 file_name = None
 video = None
