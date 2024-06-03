@@ -7,8 +7,8 @@ import tempfile
 from pytube import YouTube
 import re
 
-os.environ["GEMINI_API_KEY"] = 'AIzaSyC6XZZpQZ2uGgmtYakbY2-1wP37r2Kq7WE'
-genai.configure(api_key=os.environ["GEMINI_API_KEY"] )
+
+genai.configure(api_key='AIzaSyC6XZZpQZ2uGgmtYakbY2-1wP37r2Kq7W')
 responses = None
 file_name = None
 video = None
@@ -16,7 +16,7 @@ generation_config = {
   "temperature": 0.2,
   "top_p": 0.95,
   "top_k": 0,
-  "max_output_tokens": 20000,
+  "max_output_tokens": 8192,
 }
 
 safety_settings = [
@@ -52,7 +52,8 @@ prompts = [
       6. Write every detail you need to satisfy the task. You can write upto 10000 words , so do not hesitate using more words.. 
       7. Act as a professional , do not include casual words.
       8. Take informations from visuals and audio when the visual is related the main topic. If the visuals are not related to the main lecture, ignore it.
-      9. You can use different colors using markdown to indicate the importance of a topic or a word.
+      9. Names used in the whole note should be italic and bold (***NAME***).
+      10. Headlines and pointer headlines should be bold . 
       
       DO NOT:
       1. Do not use your words, don't add any information yourself. Use informations covered in the lecture.
@@ -92,6 +93,18 @@ def wait_for_files_active(file):
 def sanitize_title(title):
     return re.sub(r'[\\/*?:"<>|]', "", title)
 
+def configure_api(api: str):
+  genai.configure(api_key=api)
+  try:
+    list(genai.list_models())
+  except:
+    return st.error("**Your API key is invalid**")
+    st.stop()
+  else:
+    st.success("**Your API key is valid**")
+    pass
+
+
 st.set_page_config(page_title="Keynoter", page_icon='📝',layout="wide" )
 place = st.empty()
 with place.container():
@@ -107,6 +120,12 @@ with place.container():
   )
 
   st.markdown('<h2 class="centered-title">Note Your Lecture</h2>', unsafe_allow_html=True) 
+  
+  # api_config = st.text_input("**Enter your Google API**")
+  # if api_config:
+  #    configure_api('AIzaSyC6XZZpQZ2uGgmtYakbY2-1wP37r2Kq7W')
+  # else:
+  #    st.stop()
   options = st.radio("**Select an Option**", ["Upload a video file", "Directly from youtube link"])
   if options == "Upload a video file":
      uploader = st.file_uploader('Upload the lecture video', type=['mp4', 'mkv'])
