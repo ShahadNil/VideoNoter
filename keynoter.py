@@ -52,8 +52,7 @@ prompts = [
       6. Write every detail you need to satisfy the task. You can write upto 10000 words , so do not hesitate using more words.. 
       7. Act as a professional , do not include casual words.
       8. Take informations from visuals and audio when the visual is related the main topic. If the visuals are not related to the main lecture, ignore it.
-      9. Names used in the whole note should be italic and bold (***NAME***).
-      10. Headlines and pointer headlines should be bold . 
+      9. Names used in the whole note should be italic (*NAME*).
       
       DO NOT:
       1. Do not use your words, don't add any information yourself. Use informations covered in the lecture.
@@ -66,7 +65,7 @@ prompts = [
       3. Write down important key notes of each topic. It should be detailed.
       4. If the lecture covers different parts , divide them into different segments.
       5. Your main responsibility is to provide a note of the long lecture , which note contains every detail covered in the lecture .
-      6. Mention time stamps or speaker name or number(if provided) or source name to ensure the sources of information.
+      6. Mention time stamps or speaker name (if mentioned) or source name to ensure the sources of information.
     """
 ]
 
