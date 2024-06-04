@@ -60,7 +60,7 @@ prompts = [
       3. Write down important key notes of each topic. It should be detailed.
       4. If the lecture covers different parts , divide them into different segments.
       5. Your main responsibility is to provide a note of the long lecture , which note contains every detail covered in the lecture .
-      6. Mention time stamp or names (if there any name) to ensure information.
+      6. Mention time stamp to ensure information.
 
       DO NOT:
       1. Do not use your words, don't add any information yourself. Use informations covered in the lecture.
@@ -244,6 +244,9 @@ while st.session_state.responses == None:
     regen = st.button("Regenerate")
     if regen:
        st.session_state.responses = None
+       continue
+    else:
+       pass
   except Exception as e:
       st.error(e)
 
