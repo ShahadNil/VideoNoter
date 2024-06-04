@@ -8,7 +8,7 @@ from pytube import YouTube
 import re
 
 
-genai.configure(api_key='AIzaSyC6XZZpQZ2uGgmtYakbY2-1wP37r2Kq7WE')
+#genai.configure(api_key='AIzaSyC6XZZpQZ2uGgmtYakbY2-1wP37r2Kq7WE')
 responses = None
 file_name= None
 video = None
@@ -54,11 +54,6 @@ prompts = [
       8. Take informations from visuals and audio when the visual is related the main topic. If the visuals are not related to the main lecture, ignore it.
       9. Names used in the whole note should be italic (*NAME*).
       10. You can provide links (if mentioned) using markdown [LINK_NAME](LINK)
-      
-      DO NOT:
-      1. Do not use your words, don't add any information yourself. Use informations covered in the lecture.
-      2. Do not respond if the video is not related to any lecture or educational.
-
 
       Key Responsibilites:
       1. Provide a detailed summary of the whole lecture at first.
@@ -67,6 +62,11 @@ prompts = [
       4. If the lecture covers different parts , divide them into different segments.
       5. Your main responsibility is to provide a note of the long lecture , which note contains every detail covered in the lecture .
       6. Mention time stamps or speaker name (if mentioned) or source name to ensure the sources of information.
+
+      DO NOT:
+      1. Do not use your words, don't add any information yourself. Use informations covered in the lecture.
+      2. Do not respond if the video is not related to any lecture or educational.
+      3. Do not miss any important detail. 
     """
 ]
 
@@ -93,16 +93,14 @@ def wait_for_files_active(file):
 def sanitize_title(title):
     return re.sub(r'[\\/*?:"<>|]', "", title)
 
-def configure_api(api: str):
+def is_valid_api(api: str):
   genai.configure(api_key=api)
   try:
     list(genai.list_models())
   except:
-    return st.error("**Your API key is invalid**")
-    st.stop()
+    return False
   else:
-    st.success("**Your API key is valid**")
-    pass
+    return True
 
 
 st.set_page_config(page_title="Keynoter", page_icon='📝',layout="wide" )
@@ -120,8 +118,19 @@ with place.container():
   )
 
   st.markdown('<h2 class="centered-title">Note Your Lecture</h2>', unsafe_allow_html=True) 
-  
-  # api_config = st.text_input("**Enter your Google API**")
+  api_config = st.empty()
+  with api_config.container():
+    api = st.text_input("**Enter your Google API**")
+    button = st.button("Submit API")
+    if api!="" and button and is_valid_api(api=api):
+       st.success("The API is valid")
+       time.sleep(2)
+       api_config.empty()
+    elif api != "" and button and is_valid_api(api=api)==False :
+       st.error("Invalid API")
+       st.stop()
+    else:
+       st.stop()
   # if api_config:
   #    configure_api('AIzaSyC6XZZpQZ2uGgmtYakbY2-1wP37r2Kq7W')
   # else:
@@ -201,6 +210,7 @@ success = st.warning("**Wait a few moments to process the video**")
 
 try:
   video_obj =  upload_to_gemini(path)
+
   wait_for_files_active(video_obj)
 except Exception as e:
   st.error(e)
