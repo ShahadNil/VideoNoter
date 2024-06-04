@@ -66,7 +66,6 @@ prompts = [
       1. Do not use your words, don't add any information yourself. Use informations covered in the lecture.
       2. Do not respond if the video is not related to any lecture or educational.
       3. Do not miss any important detail. 
-      4. Do not randomly select names from the total video . Ensure who stated which informartion then mention .
     """
 ]
 
