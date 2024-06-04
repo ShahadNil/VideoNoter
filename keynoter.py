@@ -59,7 +59,6 @@ prompts = [
       3. Write down important key notes of each topic. It should be detailed.
       4. If the lecture covers different parts , divide them into different segments.
       5. Your main responsibility is to provide a note of the long lecture , which note contains every detail covered in the lecture .
-      6. Mention time stamp to ensure information.
 
       DO NOT:
       1. Do not use your words, don't add any information yourself. Use informations covered in the lecture.
@@ -238,6 +237,12 @@ while responses == None:
     responses = chat_session.send_message("Here is the video. Follow instructions you are given and give a detailed note of the whole lecture.")
     generating.empty()
     st.write(responses.text)
+
+    regen = st.button("Regenerate")
+    if regen:
+      responses = None
+    else:
+      st.stop()
   except Exception as e:
       st.error(e)
 
