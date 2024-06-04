@@ -233,15 +233,17 @@ chat_session = model.start_chat(
     },
   ]
 )
-while responses == None:
+if 'responses' not in st.session_state:
+   st.session_state.responses = None
+while st.session_state.responses == None:
   generating = st.info("**Your note is generating. Please be patient.**")
   try:
-    responses = chat_session.send_message("Here is the video. Follow instructions you are given and give a detailed note of the whole lecture.")
+    st.session_state.responses = chat_session.send_message("Here is the video. Follow instructions you are given and give a detailed note of the whole lecture.")
     generating.empty()
-    st.write(responses.text)
+    st.write(st.session_state.responses.text)
     regen = st.button("Regenerate")
     if regen:
-       responses = None
+       st.session_state.responses = None
   except Exception as e:
       st.error(e)
 
