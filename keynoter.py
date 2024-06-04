@@ -246,7 +246,7 @@ while st.session_state.responses == None:
        st.session_state.responses = None
        continue
     else:
-       pass
+       st.stop()
   except Exception as e:
       st.error(e)
 
