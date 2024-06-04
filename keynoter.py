@@ -60,12 +60,13 @@ prompts = [
       3. Write down important key notes of each topic. It should be detailed.
       4. If the lecture covers different parts , divide them into different segments.
       5. Your main responsibility is to provide a note of the long lecture , which note contains every detail covered in the lecture .
-      6. Mention time stamps or speaker name (if mentioned) or source name to ensure the sources of information.
+      6. Mention time stamp or names (if mentioned) to ensure information.
 
       DO NOT:
       1. Do not use your words, don't add any information yourself. Use informations covered in the lecture.
       2. Do not respond if the video is not related to any lecture or educational.
       3. Do not miss any important detail. 
+      4. Do not randomly select names from the total video . Ensure who stated which informartion then mention .
     """
 ]
 
