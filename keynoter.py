@@ -7,7 +7,6 @@ import tempfile
 from pytube import YouTube
 import re
 
-
 #genai.configure(api_key='AIzaSyC6XZZpQZ2uGgmtYakbY2-1wP37r2Kq7WE')
 responses = None
 file_name= None
@@ -104,7 +103,26 @@ def is_valid_api(api: str):
 
 
 st.set_page_config(page_title="Keynoter", page_icon='📝',layout="wide" )
+api_config = st.empty()
+with api_config.container():
+  if 'api' not in st.session_state:
+    api = st.text_input("**Enter your Google API**")
+    button = st.button("Submit API")
+    if api!="" and button and is_valid_api(api=api):
+        st.success("The API is valid")
+        st.session_state.api = api
+        time.sleep(2)
+        api_config.empty()
+    elif api != "" and button and is_valid_api(api=api)==False :
+        st.error("Invalid API")
+        st.stop()
+    else:
+        st.stop()
+  else:
+     api_config.empty()
+
 place = st.empty()
+
 with place.container():
   st.markdown(
       '<style> \
@@ -118,19 +136,6 @@ with place.container():
   )
 
   st.markdown('<h2 class="centered-title">Note Your Lecture</h2>', unsafe_allow_html=True) 
-  api_config = st.empty()
-  with api_config.container():
-    api = st.text_input("**Enter your Google API**")
-    button = st.button("Submit API")
-    if api!="" and button and is_valid_api(api=api):
-       st.success("The API is valid")
-       time.sleep(2)
-       api_config.empty()
-    elif api != "" and button and is_valid_api(api=api)==False :
-       st.error("Invalid API")
-       st.stop()
-    else:
-       st.stop()
   # if api_config:
   #    configure_api('AIzaSyC6XZZpQZ2uGgmtYakbY2-1wP37r2Kq7W')
   # else:
