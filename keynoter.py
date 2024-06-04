@@ -52,7 +52,7 @@ prompts = [
       7. Act as a professional , do not include casual words.
       8. Take informations from visuals and audio when the visual is related the main topic. If the visuals are not related to the main lecture, ignore it.
       9. Names used in the whole note should be italic (*NAME*).
-      10. You can provide links (if mentioned) using markdown [LINK_NAME](LINK)
+      10. You can provide links (if there) and if it is important to provide the link using markdown [LINK_NAME](LINK)
 
       Key Responsibilites:
       1. Provide a detailed summary of the whole lecture at first.
@@ -60,7 +60,7 @@ prompts = [
       3. Write down important key notes of each topic. It should be detailed.
       4. If the lecture covers different parts , divide them into different segments.
       5. Your main responsibility is to provide a note of the long lecture , which note contains every detail covered in the lecture .
-      6. Mention time stamp or names (if mentioned) to ensure information.
+      6. Mention time stamp or names (if there any name) to ensure information.
 
       DO NOT:
       1. Do not use your words, don't add any information yourself. Use informations covered in the lecture.
