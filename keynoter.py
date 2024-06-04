@@ -237,10 +237,13 @@ while responses == None:
   generating = st.info("**Your note is generating. Please be patient.**")
   try:
     responses = chat_session.send_message("Here is the video. Follow instructions you are given and give a detailed note of the whole lecture.")
+    generating.empty()
+    st.write(responses.text)
+    regen = st.button("Regenerate")
+    if regen:
+       responses = None
   except Exception as e:
       st.error(e)
-generating.empty()
-st.write(responses.text)
-os.remove(path)
 
+os.remove(path)
 genai.delete_file(video_obj.name)
