@@ -12,13 +12,13 @@ state = st.session_state
 if 'video_obj' not in state:
    state.video_obj = None 
 if 'path' not in state:
-   state.path = ""
+   state.path = None
 if 'button' not in state:
    state.button = None
 if 'submit_button' not in state:
    state.submit_button = None 
 if 'video_url' not in state:
-   state.video_url = ""
+   state.video_url = None
 if 'note_button' not in state:
    state.note_button=None
 if 'done_button' not in state:
@@ -190,11 +190,10 @@ with place.container():
 
   options = st.radio("**Select an Option**", ["Upload a video file","Directly from youtube link" ])
   if options == "Directly from youtube link":
-      if state.path=="" and state.note_button != True and state.video_url=="":
+      if state.path==None and state.note_button != True and state.video_url==None:
           state.video_url = st.text_input("**Enter your Youtube Video URL**")
           state.note_button = st.button("Get Notes")
           if state.video_url !=""  and state.note_button and (state.video_url.startswith("https://www.youtube.com/watch?v=") or state.video_url.startswith("https://youtu.be/")):
-#                state.note_button = True
                 try:
                     retrive = st.success("**Checking your video**")
                     yt = YouTube(state.video_url)
@@ -240,7 +239,7 @@ with place.container():
          pass
 
   elif options == "Upload a video file":
-    if state.path=="" and state.submit_button != True:
+    if state.path==None and state.submit_button != True:
       uploader = st.file_uploader('Upload the lecture video', type=['mp4', 'mkv'])
       if uploader:
           temp_dir = tempfile.mkdtemp(prefix="gemini")
