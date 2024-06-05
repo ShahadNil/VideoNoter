@@ -8,6 +8,27 @@ from pytube import YouTube
 import re
 
 #genai.configure(api_key='AIzaSyC6XZZpQZ2uGgmtYakbY2-1wP37r2Kq7WE')
+state = st.session_state
+if 'video_obj' not in state:
+   state.video_obj = None 
+if 'path' not in state:
+   state.path = None 
+if 'button' not in state:
+   state.button = None
+if 'submit_button' not in state:
+   state.submit_button = None 
+if 'video_url' not in state:
+   state.video_url = ""
+if 'button' not in state:
+   state.button=None
+if 'history' not in state:
+   state.history= None
+if 'done_button' not in state:
+   state.done_button= None
+if 'options' not in state:
+   state.options= None
+if 'temp_dir' not in state:
+   state.temp_dir = None
 responses = None
 file_name= None
 video = None
@@ -119,7 +140,7 @@ with api_config.container():
 
   if 'api' not in st.session_state:
     api = st.text_input("**Enter your Google API**")
-    button = st.button("Submit API")
+    state.button = st.button("Submit API")
     st.write("**Don't have an API?**")
     st.write("1. Sign in to your Google account on Chrome.")
     st.write("2. Go to [Google AI Studio](https://aistudio.google.com/app/apikey).")
@@ -135,12 +156,12 @@ with api_config.container():
        st.image("ss3.png")
        st.write("*Copy the generated key*")
 
-    if api!="" and button and is_valid_api(api=api):
+    if api!="" and state.button and is_valid_api(api=api):
         st.toast("**The API is valid**")
         st.session_state.api = api
         time.sleep(2)
         api_config.empty()
-    elif api != "" and button and is_valid_api(api=api)==False :
+    elif api != "" and state.button and is_valid_api(api=api)==False :
         st.toast("**Invalid API**")
         st.stop()
     else:
@@ -167,30 +188,28 @@ with place.container():
   options = st.radio("**Select an Option**", ["Upload a video file", "Directly from youtube link"])
   if options == "Upload a video file":
      uploader = st.file_uploader('Upload the lecture video', type=['mp4', 'mkv'])
-     if uploader:
+     if uploader and state.path==None:
         temp_dir = tempfile.mkdtemp(prefix="gemini")
-        path = os.path.join(temp_dir, uploader.name)
-        with open(path, "wb") as f:
+        state.path = os.path.join(temp_dir, uploader.name)
+        with open(state.path, "wb") as f:
           f.write(uploader.getvalue())
-        st.sidebar.video(path)
-        submit_button = st.button("Get Notes")
-        if submit_button:
+        st.sidebar.video(state.path)
+        state.submit_button = st.button("Get Notes")
+        if state.submit_button:
           pass
         else:
           st.stop()
      else:
-        st.stop()
-
-
+        pass
 
 
   elif options == "Directly from youtube link":
-      video_url = st.text_input("**Enter your Youtube Video URL**")
-      button = st.button("Get Notes")
-      if video_url !=""  and button and (video_url.startswith("https://www.youtube.com/watch?v=") or video_url.startswith("https://youtu.be/")):
+      state.video_url = st.text_input("**Enter your Youtube Video URL**")
+      state.button = st.button("Get Notes")
+      if state.video_url !=""  and state.button and (state.video_url.startswith("https://www.youtube.com/watch?v=") or state.video_url.startswith("https://youtu.be/")):
             try:
                 retrive = st.success("**Checking your video**")
-                yt = YouTube(video_url)
+                yt = YouTube(state.video_url)
                 if yt.streams.filter(res="720p", progressive=True).first() is not None:
                     video = yt.streams.filter(res="720p", progressive=True).first()
                     retrive.empty()
@@ -212,12 +231,12 @@ with place.container():
                     try:
                       video_title = yt.title 
                       sanitized_title = sanitize_title(video_title)
-                      path = f"{sanitized_title}.mp4"
+                      state.path = f"{sanitized_title}.mp4"
                       downloading = st.success("**Downloading on progress..**")
-                      video.download(filename=path)
+                      video.download(filename=state.path)
                       res.empty()
                       downloading.empty()
-                      st.sidebar.video(path)
+                      st.sidebar.video(state.path)
                       pass
                     except Exception as e:
                        st.error(e)
@@ -227,7 +246,7 @@ with place.container():
                 st.stop()
             
       else:
-         st.stop()
+         pass
 
 
   else:
@@ -238,29 +257,30 @@ place.empty()
 success = st.warning("**Wait a few moments to process the video**")
 
 try:
-  video_obj =  upload_to_gemini(path)
+  state.video_obj =  upload_to_gemini(state.path)
 
-  wait_for_files_active(video_obj)
+  wait_for_files_active(state.video_obj)
 except Exception as e:
   st.error(e)
 
 success.empty()
-history = [{"role":"user", "parts":[video_obj]}]
-chat_session = model.start_chat(history=history)
+state.history = [{"role":"user", "parts":[state.video_obj]}]
+chat_session = model.start_chat(history=state.history)
 
 
 while responses == None:
   generating = st.info("**Your note is generating. Please be patient.**")
   try:
     responses = chat_session.send_message("Here is the video. Follow instructions you are given and give a detailed note of the whole lecture.")
+    generating.empty()
+    st.write(responses.text)
   except Exception as e:
     st.error(e)
 
-generating.empty()
-st.write(responses.text)
-if st.button("Done"):
-   os.remove(path)
-   genai.delete_file(video_obj.name)
+state.done_button =st.button("Done")
+if state.done_button:
+   os.remove(state.path)
+   genai.delete_file(state.video_obj.name)
    st.stop()
 else:
    pass
@@ -268,7 +288,7 @@ else:
 feedback = st.sidebar.text_area("**Regenerate with Feedback**")
 regen= st.sidebar.button("Regenerate")
 if regen and feedback!="":
-   history.append({"role":"model", "parts":[responses.text]})
+   state.history.append({"role":"model", "parts":[responses.text]})
    regenerating = st.info("**Your note is regenerating..**")
    try:
       regen_responses = chat_session.send_message(f"Regenerate the note obeying the feedback from user. Feedback : {feedback}")
