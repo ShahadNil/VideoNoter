@@ -306,7 +306,7 @@ while state.regen_responses == None:
         state.history.append({"role":"model", "parts":[state.regen_responses.text]})
         generation_place.empty()
         generation_place = st.empty()
-        with generation_place.container:
+        with generation_place.container():
           st.write(state.regen_responses)
         state.regen_responses = None
     except Exception as e:
