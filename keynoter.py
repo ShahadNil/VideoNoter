@@ -121,9 +121,9 @@ with api_config.container():
     api = st.text_input("**Enter your Google API**")
     button = st.button("Submit API")
     st.write("**Don't have an API?**")
-    st.write("1. Sign in to your Google account on Chrome")
-    st.write("2. Go to the [Link](https://aistudio.google.com/app/apikey)")
-    st.write("3. Follow the screenshots")
+    st.write("1. Sign in to your Google account on Chrome.")
+    st.write("2. Go to the [Link](https://aistudio.google.com/app/apikey) of Google AI Studio.")
+    st.write("3. Follow the screenshots:")
     col1, col2, col3 = st.columns(3)
     with col1:
        st.image("ss1.png")
