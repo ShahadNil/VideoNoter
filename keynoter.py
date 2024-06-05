@@ -246,7 +246,7 @@ except Exception as e:
 
 success.empty()
 history = [{"role":"user", "parts":[video_obj]}]
-chat_session = model.start_chat(history)
+chat_session = model.start_chat(history=history)
 
 
 while responses == None:
@@ -268,7 +268,7 @@ else:
 feedback = st.sidebar.text_area("**Regenerate with Feedback**")
 regen= st.sidebar.button("Regenerate")
 if regen and feedback!="":
-   history.append({"role":"model", "parts":[{'text':responses.text}]})
+   history.append({"role":"model", "parts":[responses.text]})
    regenerating = st.info("**Your note is regenerating..**")
    try:
       regen_responses = chat_session.send_message(f"Regenerate the note obeying the feedback from user. Feedback : {feedback}")
