@@ -245,27 +245,34 @@ except Exception as e:
   st.error(e)
 
 success.empty()
-
-chat_session = model.start_chat(
-  history=[
-    {
-      "role": "user",
-      "parts": [
-        video_obj,
-      ],
-    },
-  ]
-)
+history = [{"role":"user", "parts":[video_obj]}]
+chat_session = model.start_chat(history)
 
 
 while responses == None:
   generating = st.info("**Your note is generating. Please be patient.**")
   try:
     responses = chat_session.send_message("Here is the video. Follow instructions you are given and give a detailed note of the whole lecture.")
-    generating.empty()
-    st.write(responses.text)
   except Exception as e:
     st.error(e)
 
-os.remove(path)
-genai.delete_file(video_obj.name)
+generating.empty()
+st.write(responses.text)
+if st.button("Done"):
+   os.remove(path)
+   genai.delete_file(video_obj.name)
+   st.stop()
+else:
+   pass
+
+feedback = st.sidebar.text_area("**Regenerate with Feedback**")
+regen= st.sidebar.button("Regenerate")
+if regen and feedback!="":
+   history.append({"role":"model", "parts":[{'text':responses.text}]})
+   regenerating = st.info("**Your note is regenerating..**")
+   try:
+      regen_responses = chat_session.send_message(f"Regenerate the note obeying the feedback from user. Feedback : {feedback}")
+   except Exception as e:
+      st.error(e)
+else:
+   st.stop()
