@@ -19,8 +19,8 @@ if 'submit_button' not in state:
    state.submit_button = None 
 if 'video_url' not in state:
    state.video_url = ""
-if 'button' not in state:
-   state.button=None
+if 'note_button' not in state:
+   state.note_button=None
 if 'done_button' not in state:
    state.done_button= None
 if 'options' not in state:
@@ -188,34 +188,13 @@ with place.container():
 
   st.markdown('<h2 class="centered-title">Note Your Lecture</h2>', unsafe_allow_html=True) 
 
-  state.options = st.radio("**Select an Option**", ["Upload a video file", "Directly from youtube link"])
-  if state.options == "Upload a video file":
-    if state.path=="" and state.submit_button != True:
-      uploader = st.file_uploader('Upload the lecture video', type=['mp4', 'mkv'])
-      if uploader:
-          temp_dir = tempfile.mkdtemp(prefix="gemini")
-          state.path = os.path.join(temp_dir, uploader.name)
-          with open(state.path, "wb") as f:
-            f.write(uploader.getvalue())
-          st.sidebar.video(state.path)
-          state.submit_button = st.button("Get Notes")
-          if state.submit_button:
-            state.submit_button = True
-            pass
-          else:
-            st.stop()
-      else:
-         st.stop()
-    else:
-        pass
-
-
-  elif state.options == "Directly from youtube link":
-      if state.path == "" and state.button != True:
+  options = st.radio("**Select an Option**", ["Upload a video file","Directly from youtube link" ])
+  if options == "Directly from youtube link":
+      if state.path=="" and state.note_button != True and state.video_url=="":
           state.video_url = st.text_input("**Enter your Youtube Video URL**")
-          state.button = st.button("Get Notes")
-          if state.video_url !=""  and state.button and (state.video_url.startswith("https://www.youtube.com/watch?v=") or state.video_url.startswith("https://youtu.be/")):
-                state.button = True
+          state.note_button = st.button("Get Notes")
+          if state.video_url !=""  and state.note_button and (state.video_url.startswith("https://www.youtube.com/watch?v=") or state.video_url.startswith("https://youtu.be/")):
+                state.note_button = True
                 try:
                     retrive = st.success("**Checking your video**")
                     yt = YouTube(state.video_url)
@@ -256,10 +235,28 @@ with place.container():
                 
           else:
             st.stop()
-
       else:
          pass
 
+  elif options == "Upload a video file":
+    if state.path=="" and state.submit_button != True:
+      uploader = st.file_uploader('Upload the lecture video', type=['mp4', 'mkv'])
+      if uploader:
+          temp_dir = tempfile.mkdtemp(prefix="gemini")
+          state.path = os.path.join(temp_dir, uploader.name)
+          with open(state.path, "wb") as f:
+            f.write(uploader.getvalue())
+          st.sidebar.video(state.path)
+          state.submit_button = st.button("Get Notes")
+          if state.submit_button:
+            state.submit_button = True
+            pass
+          else:
+            st.stop()
+      else:
+         st.stop()
+    else:
+        pass
 
   else:
      st.stop()
