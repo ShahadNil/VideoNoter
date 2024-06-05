@@ -103,9 +103,37 @@ def is_valid_api(api: str):
 st.set_page_config(page_title="Keynoter", page_icon='📝',layout="wide" )
 api_config = st.empty()
 with api_config.container():
+  st.markdown(
+      '<style> \
+          .centered-title { \
+              text-align: center; \
+              color: #f8f8ff;  \
+              weight: bold;\
+          } \
+      </style>', 
+      unsafe_allow_html=True
+  )
+
+  st.markdown('<h2 class="centered-title">Note Your Lecture</h2>', unsafe_allow_html=True) 
+
   if 'api' not in st.session_state:
     api = st.text_input("**Enter your Google API**")
     button = st.button("Submit API")
+    st.write("**Don't have an API?**")
+    st.write("1. Sign in to your Google account on Chrome")
+    st.write("2. Go to the [Link](https://aistudio.google.com/app/apikey)")
+    st.write("3. Follow the screenshots")
+    col1, col2, col3 = st.columns(3)
+    with col1:
+       st.image("ss1.png")
+       st.write("*Click on the Create API key*")
+    with col2:
+       st.image("ss2.png")
+       st.write("*Click on the Create API key for a new project*")
+    with col3:
+       st.image("ss3.png")
+       st.write("*Copy the generated key*")
+
     if api!="" and button and is_valid_api(api=api):
         st.success("The API is valid")
         st.session_state.api = api
@@ -134,10 +162,7 @@ with place.container():
   )
 
   st.markdown('<h2 class="centered-title">Note Your Lecture</h2>', unsafe_allow_html=True) 
-  # if api_config:
-  #    configure_api('AIzaSyC6XZZpQZ2uGgmtYakbY2-1wP37r2Kq7W')
-  # else:
-  #    st.stop()
+
   options = st.radio("**Select an Option**", ["Upload a video file", "Directly from youtube link"])
   if options == "Upload a video file":
      uploader = st.file_uploader('Upload the lecture video', type=['mp4', 'mkv'])
@@ -231,20 +256,15 @@ chat_session = model.start_chat(
   ]
 )
 
+
 while responses == None:
   generating = st.info("**Your note is generating. Please be patient.**")
   try:
     responses = chat_session.send_message("Here is the video. Follow instructions you are given and give a detailed note of the whole lecture.")
     generating.empty()
     st.write(responses.text)
-
-    regen = st.button("Regenerate")
-    if regen:
-      responses = None
-    else:
-      st.stop()
   except Exception as e:
-      st.error(e)
+    st.error(e)
 
 os.remove(path)
 genai.delete_file(video_obj.name)
