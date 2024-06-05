@@ -190,7 +190,7 @@ with place.container():
 
   options = st.radio("**Select an Option**", ["Upload a video file","Directly from youtube link" ])
   if options == "Directly from youtube link":
-      if state.path==None and state.note_button != True and state.video_url==None:
+      if state.path==None and state.video_url==None:
           state.video_url = st.text_input("**Enter your Youtube Video URL**")
           state.note_button = st.button("Get Notes")
           if state.video_url !=""  and state.note_button and (state.video_url.startswith("https://www.youtube.com/watch?v=") or state.video_url.startswith("https://youtu.be/")):
