@@ -21,15 +21,17 @@ if 'video_url' not in state:
    state.video_url = ""
 if 'button' not in state:
    state.button=None
-if 'history' not in state:
-   state.history= None
 if 'done_button' not in state:
    state.done_button= None
 if 'options' not in state:
    state.options= None
 if 'temp_dir' not in state:
    state.temp_dir = None
-responses = None
+if 'responses' not in state:
+   state.responses = None
+if 'regen_responses' not in state:
+   state.regen_responses = None
+
 file_name= None
 video = None
 generation_config = {
@@ -187,64 +189,73 @@ with place.container():
 
   options = st.radio("**Select an Option**", ["Upload a video file", "Directly from youtube link"])
   if options == "Upload a video file":
-     uploader = st.file_uploader('Upload the lecture video', type=['mp4', 'mkv'])
-     if uploader and state.path==None:
-        temp_dir = tempfile.mkdtemp(prefix="gemini")
-        state.path = os.path.join(temp_dir, uploader.name)
-        with open(state.path, "wb") as f:
-          f.write(uploader.getvalue())
-        st.sidebar.video(state.path)
-        state.submit_button = st.button("Get Notes")
-        if state.submit_button:
-          pass
-        else:
-          st.stop()
-     else:
+    if state.path==None and state.submit_button != True:
+      uploader = st.file_uploader('Upload the lecture video', type=['mp4', 'mkv'])
+      if uploader:
+          temp_dir = tempfile.mkdtemp(prefix="gemini")
+          state.path = os.path.join(temp_dir, uploader.name)
+          with open(state.path, "wb") as f:
+            f.write(uploader.getvalue())
+          st.sidebar.video(state.path)
+          state.submit_button = st.button("Get Notes")
+          if state.submit_button:
+            state.submit_button = True
+            pass
+          else:
+            st.stop()
+      else:
+         st.stop()
+    else:
         pass
 
 
   elif options == "Directly from youtube link":
-      state.video_url = st.text_input("**Enter your Youtube Video URL**")
-      state.button = st.button("Get Notes")
-      if state.video_url !=""  and state.button and (state.video_url.startswith("https://www.youtube.com/watch?v=") or state.video_url.startswith("https://youtu.be/")):
-            try:
-                retrive = st.success("**Checking your video**")
-                yt = YouTube(state.video_url)
-                if yt.streams.filter(res="720p", progressive=True).first() is not None:
-                    video = yt.streams.filter(res="720p", progressive=True).first()
-                    retrive.empty()
-                    res = st.success("**720p stream found!**")
-                elif yt.streams.filter(res="480p", progressive=True).first() is not None:
-                    video = yt.streams.filter(res="480p", progressive=True).first()
-                    retrive.empty()
-                    res = st.success("**480p stream found!**")
-                elif yt.streams.filter(res="360p", progressive=True).first() is not None:
-                    video = yt.streams.filter(res="360p", progressive=True).first()
-                    retrive.empty()
-                    res = st.success("**360p stream found!**")
-                else:
-                    retrive.empty()
-                    st.error("**No suitable video resolution found.**")
+      if state.path == None and state.video_url == "" and state.button != True:
+          state.video_url = st.text_input("**Enter your Youtube Video URL**")
+          state.button = st.button("Get Notes")
+          if state.video_url !=""  and state.button and (state.video_url.startswith("https://www.youtube.com/watch?v=") or state.video_url.startswith("https://youtu.be/")):
+                state.button = True
+                try:
+                    retrive = st.success("**Checking your video**")
+                    yt = YouTube(state.video_url)
+                    if yt.streams.filter(res="720p", progressive=True).first() is not None:
+                        video = yt.streams.filter(res="720p", progressive=True).first()
+                        retrive.empty()
+                        res = st.success("**720p stream found!**")
+                    elif yt.streams.filter(res="480p", progressive=True).first() is not None:
+                        video = yt.streams.filter(res="480p", progressive=True).first()
+                        retrive.empty()
+                        res = st.success("**480p stream found!**")
+                    elif yt.streams.filter(res="360p", progressive=True).first() is not None:
+                        video = yt.streams.filter(res="360p", progressive=True).first()
+                        retrive.empty()
+                        res = st.success("**360p stream found!**")
+                    else:
+                        retrive.empty()
+                        st.error("**No suitable video resolution found.**")
+                        st.stop()
+                            
+                    if video:
+                        try:
+                          video_title = yt.title 
+                          sanitized_title = sanitize_title(video_title)
+                          state.path = f"{sanitized_title}.mp4"
+                          downloading = st.success("**Downloading on progress..**")
+                          video.download(filename=state.path)
+                          res.empty()
+                          downloading.empty()
+                          st.sidebar.video(state.path)
+                          pass
+                        except Exception as e:
+                          st.error(e)
+                          st.stop()
+                except Exception as e:
+                    st.error(e)
                     st.stop()
-                        
-                if video:
-                    try:
-                      video_title = yt.title 
-                      sanitized_title = sanitize_title(video_title)
-                      state.path = f"{sanitized_title}.mp4"
-                      downloading = st.success("**Downloading on progress..**")
-                      video.download(filename=state.path)
-                      res.empty()
-                      downloading.empty()
-                      st.sidebar.video(state.path)
-                      pass
-                    except Exception as e:
-                       st.error(e)
-                       st.stop()
-            except Exception as e:
-                st.error(e)
-                st.stop()
-            
+                
+          else:
+            st.stop()
+
       else:
          pass
 
@@ -254,45 +265,51 @@ with place.container():
  
 
 place.empty()
-success = st.warning("**Wait a few moments to process the video**")
 
-try:
-  state.video_obj =  upload_to_gemini(state.path)
+if state.video_obj == None:
+  try:
+  
+    success = st.warning("**Wait a few moments to process the video**")
+    state.video_obj =  upload_to_gemini(state.path)
+    wait_for_files_active(state.video_obj)  
+    success.empty()
+  except Exception as e:
+    st.error(e)
+else:
+    pass
 
-  wait_for_files_active(state.video_obj)
-except Exception as e:
-  st.error(e)
 
-success.empty()
-state.history = [{"role":"user", "parts":[state.video_obj]}]
+if 'history' not in state:
+   state.history= [{"role":"user", "parts":[state.video_obj]}]
+
 chat_session = model.start_chat(history=state.history)
-
-
-while responses == None:
+while state.responses == None:
   generating = st.info("**Your note is generating. Please be patient.**")
   try:
-    responses = chat_session.send_message("Here is the video. Follow instructions you are given and give a detailed note of the whole lecture.")
-    generating.empty()
-    st.write(responses.text)
+    state.responses = chat_session.send_message("Here is the video. Follow instructions you are given and give a detailed note of the whole lecture.")
+    state.history.append({"role":"model", "parts":[state.responses.text]})
   except Exception as e:
     st.error(e)
 
+generating.empty()
+st.write(state.responses.text)
+
+while state.regen_responses == None:
+  feedback = st.sidebar.text_area("**Regenerate with Feedback**")
+  regen= st.sidebar.button("Regenerate")
+  if regen and feedback!="":
+    regenerating = st.info("**Your note is regenerating..**")
+    try:
+        state.regen_responses = chat_session.send_message(f"Regenerate the note obeying the feedback from user. Feedback : {feedback}")
+        state.history.append({"role":"model", "parts":[state.regen_responses.text]})
+        state.regen_responses = None
+    except Exception as e:
+        st.error(e)
+  else:
+    st.stop()
+
 state.done_button =st.button("Done")
 if state.done_button:
-   os.remove(state.path)
-   genai.delete_file(state.video_obj.name)
-   st.stop()
-else:
-   pass
-
-feedback = st.sidebar.text_area("**Regenerate with Feedback**")
-regen= st.sidebar.button("Regenerate")
-if regen and feedback!="":
-   state.history.append({"role":"model", "parts":[responses.text]})
-   regenerating = st.info("**Your note is regenerating..**")
-   try:
-      regen_responses = chat_session.send_message(f"Regenerate the note obeying the feedback from user. Feedback : {feedback}")
-   except Exception as e:
-      st.error(e)
-else:
-   st.stop()
+  os.remove(state.path)
+  genai.delete_file(state.video_obj.name)
+  st.stop()
