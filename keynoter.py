@@ -12,7 +12,7 @@ state = st.session_state
 if 'video_obj' not in state:
    state.video_obj = None 
 if 'path' not in state:
-   state.path = None 
+   state.path = ""
 if 'button' not in state:
    state.button = None
 if 'submit_button' not in state:
@@ -25,6 +25,7 @@ if 'done_button' not in state:
    state.done_button= None
 if 'options' not in state:
    state.options= None
+
 if 'temp_dir' not in state:
    state.temp_dir = None
 if 'responses' not in state:
@@ -187,9 +188,9 @@ with place.container():
 
   st.markdown('<h2 class="centered-title">Note Your Lecture</h2>', unsafe_allow_html=True) 
 
-  options = st.radio("**Select an Option**", ["Upload a video file", "Directly from youtube link"])
-  if options == "Upload a video file":
-    if state.path==None and state.submit_button != True:
+  state.options = st.radio("**Select an Option**", ["Upload a video file", "Directly from youtube link"])
+  if state.options == "Upload a video file":
+    if state.path=="" and state.submit_button != True:
       uploader = st.file_uploader('Upload the lecture video', type=['mp4', 'mkv'])
       if uploader:
           temp_dir = tempfile.mkdtemp(prefix="gemini")
@@ -209,8 +210,8 @@ with place.container():
         pass
 
 
-  elif options == "Directly from youtube link":
-      if state.path == None and state.video_url == "" and state.button != True:
+  elif state.options == "Directly from youtube link":
+      if state.path == "" and state.button != True:
           state.video_url = st.text_input("**Enter your Youtube Video URL**")
           state.button = st.button("Get Notes")
           if state.video_url !=""  and state.button and (state.video_url.startswith("https://www.youtube.com/watch?v=") or state.video_url.startswith("https://youtu.be/")):
@@ -268,7 +269,6 @@ place.empty()
 
 if state.video_obj == None:
   try:
-  
     success = st.warning("**Wait a few moments to process the video**")
     state.video_obj =  upload_to_gemini(state.path)
     wait_for_files_active(state.video_obj)  
@@ -292,7 +292,9 @@ while state.responses == None:
     st.error(e)
 
 generating.empty()
-st.write(state.responses.text)
+generation_place = st.empty()
+with generation_place.container:
+  st.write(state.responses.text)
 
 while state.regen_responses == None:
   feedback = st.sidebar.text_area("**Regenerate with Feedback**")
@@ -302,6 +304,10 @@ while state.regen_responses == None:
     try:
         state.regen_responses = chat_session.send_message(f"Regenerate the note obeying the feedback from user. Feedback : {feedback}")
         state.history.append({"role":"model", "parts":[state.regen_responses.text]})
+        generation_place.empty()
+        generation_place = st.empty()
+        with generation_place.container:
+          st.write(state.regen_responses)
         state.regen_responses = None
     except Exception as e:
         st.error(e)
