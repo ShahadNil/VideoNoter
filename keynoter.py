@@ -293,7 +293,7 @@ while state.responses == None:
 
 generating.empty()
 generation_place = st.empty()
-with generation_place.container:
+with generation_place.container():
   st.write(state.responses.text)
 
 while state.regen_responses == None:
