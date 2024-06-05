@@ -185,7 +185,7 @@ with place.container():
 
   elif options == "Directly from youtube link":
       video_url = st.text_input("**Enter your Youtube Video URL**")
-      button = st.button("Submit")
+      button = st.button("Get Notes")
       if video_url !=""  and button and (video_url.startswith("https://www.youtube.com/watch?v=") or video_url.startswith("https://youtu.be/")):
             try:
                 retrive = st.success("**Checking your video**")
