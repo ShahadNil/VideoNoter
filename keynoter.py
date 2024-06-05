@@ -135,12 +135,12 @@ with api_config.container():
        st.write("*Copy the generated key*")
 
     if api!="" and button and is_valid_api(api=api):
-        st.success("The API is valid")
+        st.toast("**The API is valid**")
         st.session_state.api = api
         time.sleep(2)
         api_config.empty()
     elif api != "" and button and is_valid_api(api=api)==False :
-        st.error("Invalid API")
+        st.toast("**Invalid API**")
         st.stop()
     else:
         st.stop()
