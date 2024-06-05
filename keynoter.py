@@ -194,7 +194,7 @@ with place.container():
           state.video_url = st.text_input("**Enter your Youtube Video URL**")
           state.note_button = st.button("Get Notes")
           if state.video_url !=""  and state.note_button and (state.video_url.startswith("https://www.youtube.com/watch?v=") or state.video_url.startswith("https://youtu.be/")):
-                
+#                state.note_button = True
                 try:
                     retrive = st.success("**Checking your video**")
                     yt = YouTube(state.video_url)
@@ -225,7 +225,7 @@ with place.container():
                           res.empty()
                           downloading.empty()
                           st.sidebar.video(state.path)
-                          state.note_button = True
+                          
                           pass
                         except Exception as e:
                           st.error(e)
@@ -250,7 +250,6 @@ with place.container():
           st.sidebar.video(state.path)
           state.submit_button = st.button("Get Notes")
           if state.submit_button:
-            state.submit_button = True
             pass
           else:
             st.stop()
