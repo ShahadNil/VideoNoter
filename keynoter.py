@@ -62,6 +62,7 @@ prompts = [
 
       DO NOT:
       1. Do not use your words, don't add any information yourself. Use informations covered in the lecture.
+      2. Do not use HTML code to show texts beautiful , you can use MARKDOWN or LATEX .
       2. Do not respond if the video is not related to any lecture or educational.
       3. Do not miss any important detail. 
     """
@@ -172,7 +173,7 @@ with place.container():
         with open(path, "wb") as f:
           f.write(uploader.getvalue())
         st.sidebar.video(path)
-        submit_button = st.button("Done")
+        submit_button = st.button("Get Notes")
         if submit_button:
           pass
         else:
