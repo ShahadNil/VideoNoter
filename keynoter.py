@@ -278,39 +278,41 @@ if 'history' not in state:
    state.history= [{"role":"user", "parts":[state.video_obj]}]
 
 chat_session = model.start_chat(history=state.history)
-while state.responses == None:
+
+if state.responses == None:
   generating = st.info("**Your note is generating. Please be patient.**")
   try:
     state.responses = chat_session.send_message("Here is the video. Follow instructions you are given and give a detailed note of the whole lecture.")
     state.history.append({"role":"model", "parts":[state.responses.text]})
+    generating.empty()
+    generation_place = st.empty()
+    with generation_place.container():
+      st.write(state.responses.text)
+    if state.regen_responses != None:
+      os.remove(state.path)
+      genai.delete_file(state.video_obj.name)
+      st.stop()
   except Exception as e:
     st.error(e)
+else:
+   pass
 
-generating.empty()
-generation_place = st.empty()
-with generation_place.container():
-  st.write(state.responses.text)
 
-while state.regen_responses == None:
+regen_place = st.empty()
+with regen_place.container():
   feedback = st.sidebar.text_area("**Regenerate with Feedback**")
   regen= st.sidebar.button("Regenerate")
   if regen and feedback!="":
     regenerating = st.info("**Your note is regenerating..**")
     try:
         state.regen_responses = chat_session.send_message(f"Regenerate the note obeying the feedback from user. Feedback : {feedback}")
-        state.history.append({"role":"model", "parts":[state.regen_responses.text]})
-        generation_place.empty()
-        generation_place = st.empty()
-        with generation_place.container():
-          st.write(state.regen_responses)
-        state.regen_responses = None
     except Exception as e:
         st.error(e)
+    os.remove(state.path)
+    genai.delete_file(state.video_obj.name)
+    st.stop()
   else:
     st.stop()
+st.write(state.regen_responses)
 
-state.done_button =st.button("Done")
-if state.done_button:
-  os.remove(state.path)
-  genai.delete_file(state.video_obj.name)
-  st.stop()
+
