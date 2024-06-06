@@ -9,23 +9,23 @@ import re
 import markdown
 
 #genai.configure(api_key='AIzaSyC6XZZpQZ2uGgmtYakbY2-1wP37r2Kq7WE')
-state = st.session_state
-if 'video_obj' not in state:
-   state.video_obj = None 
-if 'path' not in state:
-   state.path = ""
-if 'button' not in state:
-   state.button = None
-if 'submit_button' not in state:
-   state.submit_button = None 
-if 'video_url' not in state:
-   state.video_url = ""
-if 'note_button' not in state:
-   state.note_button=None
-if 'done_button' not in state:
-   state.done_button= None
-if 'responses' not in state:
-   state.responses = None
+states = st.session_state
+if 'video_obj' not in states:
+   states.video_obj = None 
+if 'path' not in states:
+   states.path = ""
+if 'button' not in states:
+   states.button = None
+if 'submit_button' not in states:
+   states.submit_button = None 
+if 'video_url' not in states:
+   states.video_url = ""
+if 'note_button' not in states:
+   states.note_button=None
+if 'done_button' not in states:
+   states.done_button= None
+if 'responses' not in states:
+   states.responses = None
 file_name= None
 video = None
 
@@ -137,7 +137,7 @@ with api_config.container():
 
   if 'api' not in st.session_state:
     api = st.text_input("**Enter your Google API**")
-    state.button = st.button("Submit API")
+    states.button = st.button("Submit API")
     st.write("**Don't have an API?**")
     st.write("1. Sign in to your Google account on Chrome.")
     st.write("2. Go to [Google AI Studio](https://aistudio.google.com/app/apikey).")
@@ -153,12 +153,12 @@ with api_config.container():
        st.image("ss3.png")
        st.write("*Copy the generated key*")
 
-    if api!="" and state.button and is_valid_api(api=api):
+    if api!="" and states.button and is_valid_api(api=api):
         st.toast("**The API is valid**")
         st.session_state.api = api
         time.sleep(2)
         api_config.empty()
-    elif api != "" and state.button and is_valid_api(api=api)==False :
+    elif api != "" and states.button and is_valid_api(api=api)==False :
         st.toast("**Invalid API**")
         st.stop()
     else:
@@ -184,13 +184,13 @@ with place.container():
 
   options = st.radio("**Select an Option**", ["Upload a video file","Directly from youtube link" ])
   if options == "Directly from youtube link":
-      if state.path=="":
-          state.video_url = st.text_input("**Enter your Youtube Video URL**")
-          state.note_button = st.button("Get Notes")
-          if state.video_url !=""  and state.note_button and (state.video_url.startswith("https://www.youtube.com/watch?v=") or state.video_url.startswith("https://youtu.be/")):
+      if states.path=="":
+          states.video_url = st.text_input("**Enter your Youtube Video URL**")
+          states.note_button = st.button("Get Notes")
+          if states.video_url !=""  and states.note_button and (states.video_url.startswith("https://www.youtube.com/watch?v=") or states.video_url.startswith("https://youtu.be/")):
                 try:
                     retrive = st.success("**Checking your video**")
-                    yt = YouTube(state.video_url)
+                    yt = YouTube(states.video_url)
                     if yt.streams.filter(res="720p", progressive=True).first() is not None:
                         video = yt.streams.filter(res="720p", progressive=True).first()
                         retrive.empty()
@@ -212,12 +212,12 @@ with place.container():
                         try:
                           video_title = yt.title 
                           sanitized_title = sanitize_title(video_title)
-                          state.path = f"{sanitized_title}.mp4"
+                          states.path = f"{sanitized_title}.mp4"
                           downloading = st.success("**Downloading on progress..**")
-                          video.download(filename=state.path)
+                          video.download(filename=states.path)
                           res.empty()
                           downloading.empty()
-                          st.sidebar.video(state.path)
+                          st.sidebar.video(states.path)
                           
                           pass
                         except Exception as e:
@@ -233,16 +233,16 @@ with place.container():
          pass
 
   elif options == "Upload a video file":
-    if state.path=="" and state.submit_button != True:
+    if states.path=="" and states.submit_button != True:
       uploader = st.file_uploader('Upload the lecture video', type=['mp4', 'mkv'])
       if uploader:
           temp_dir = tempfile.mkdtemp(prefix="gemini")
-          state.path = os.path.join(temp_dir, uploader.name)
-          with open(state.path, "wb") as f:
+          states.path = os.path.join(temp_dir, uploader.name)
+          with open(states.path, "wb") as f:
             f.write(uploader.getvalue())
-          st.sidebar.video(state.path)
-          state.submit_button = st.button("Get Notes")
-          if state.submit_button:
+          st.sidebar.video(states.path)
+          states.submit_button = st.button("Get Notes")
+          if states.submit_button:
             pass
           else:
             st.stop()
@@ -257,11 +257,11 @@ with place.container():
 
 place.empty()
 
-if state.video_obj == None:
+if states.video_obj == None:
   try:
     success = st.warning("**Wait a few moments to process the video**")
-    state.video_obj =  upload_to_gemini(state.path)
-    wait_for_files_active(state.video_obj)  
+    states.video_obj =  upload_to_gemini(states.path)
+    wait_for_files_active(states.video_obj)  
     success.empty()
   except Exception as e:
     st.error(e)
@@ -269,18 +269,18 @@ else:
     pass
 
 
-if 'history' not in state:
-   state.history= [{"role":"user", "parts":[state.video_obj]}]
+if 'history' not in states:
+   states.history= [{"role":"user", "parts":[states.video_obj]}]
 
-chat_session = model.start_chat(history=state.history)
+chat_session = model.start_chat(history=states.history)
 
 
 generating = st.info("**Your note is generating. Please be patient.**")
 try:
-  state.responses = chat_session.send_message("Here is the video. Follow instructions you are given and give a detailed note of the whole lecture.")
-  state.history.append({"role":"model", "parts":[state.responses.text]})
+  states.responses = chat_session.send_message("Here is the video. Follow instructions you are given and give a detailed note of the whole lecture.")
+  states.history.append({"role":"model", "parts":[states.responses.text]})
   generating.empty()
-  text = state.responses.text
+  text = states.responses.text
   st.write(text)
 #  pdf_file_path = markdown_to_pdf(text)
 #  with open(pdf_file_path, "rb") as f:
@@ -294,7 +294,7 @@ try:
 except Exception as e:
   generating.empty()
   st.error(e)
-
-os.remove(state.path)
-genai.delete_file(state.video_obj.name)
-st.stop()
+finally:
+  os.remove(states.path)
+  genai.delete_file(states.video_obj.name)
+  st.stop()
