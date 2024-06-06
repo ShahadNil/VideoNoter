@@ -297,5 +297,4 @@ done_but = st.button("Done")
 if done_but:
   os.remove(states.path)
   genai.delete_file(states.video_obj.name)
-  done_but.empty()
   st.stop()
