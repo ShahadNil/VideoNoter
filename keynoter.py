@@ -273,23 +273,25 @@ if 'history' not in states:
 
 chat_session = model.start_chat(history=states.history)
 
-
-generating = st.info("**Your note is generating. Please be patient.**")
-try:
-  states.responses = chat_session.send_message("Here is the video. Follow instructions you are given and give a detailed note of the whole lecture.")
-  states.history.append({"role":"model", "parts":[states.responses.text]})
-  generating.empty()
-  text = states.responses.text
-  st.write(text)
-  st.sidebar.download_button(
-    label="Download MD",
-    data=text,
-    file_name="Keynoter.md",
-#    mime="application/pdf"
-)
-except Exception as e:
-  generating.empty()
-  st.error(e)
+if states.responses == None:
+  generating = st.info("**Your note is generating. Please be patient.**")
+  try:
+    states.responses = chat_session.send_message("Here is the video. Follow instructions you are given and give a detailed note of the whole lecture.")
+    states.history.append({"role":"model", "parts":[states.responses.text]})
+    generating.empty()
+    text = states.responses.text
+    st.write(text)
+    st.sidebar.download_button(
+      label="Download MD",
+      data=text,
+      file_name="Keynoter.md",
+  #    mime="application/pdf"
+  )
+  except Exception as e:
+    generating.empty()
+    st.error(e)
+else:
+   pass
 
 if 'done_but' not in states:
   states.done_but = None
