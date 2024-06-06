@@ -96,7 +96,6 @@ def upload_to_gemini(path, mime_type=None):
   print(f"Uploaded file '{file.name}' as: {file.uri}")
   return file
 
-
 def wait_for_files_active(file):
   file_need= genai.get_file(file.name)
   while file_need.state.name == "PROCESSING":
@@ -282,11 +281,20 @@ try:
   generating.empty()
   text = states.responses.text
   st.write(text)
-
+  st.sidebar.download_button(
+    label="Download MD",
+    data=text,
+    file_name="Keynoter.md",
+#    mime="application/pdf"
+)
 except Exception as e:
   generating.empty()
   st.error(e)
-finally:
+
+if 'done_but' not in states:
+  states.done_but = None
+done_but = st.button("Done")
+if done_but:
   os.remove(states.path)
   genai.delete_file(states.video_obj.name)
   st.stop()
