@@ -294,7 +294,7 @@ try:
 except Exception as e:
   generating.empty()
   st.error(e)
-finally:
-  os.remove(state.path)
-  genai.delete_file(state.video_obj.name)
-  st.stop()
+
+os.remove(state.path)
+genai.delete_file(state.video_obj.name)
+st.stop()
