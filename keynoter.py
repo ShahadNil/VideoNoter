@@ -282,14 +282,6 @@ try:
   generating.empty()
   text = states.responses.text
   st.write(text)
-#  pdf_file_path = markdown_to_pdf(text)
-#  with open(pdf_file_path, "rb") as f:
-  st.download_button(
-      label="Download PDF",
-      data=text,
-      file_name="converted.md",
-#      mime="application/pdf"
-  )
 
 except Exception as e:
   generating.empty()
