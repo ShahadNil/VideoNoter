@@ -1,2 +1,4 @@
 google-generativeai
 pytube
+markdown
+weasyprint

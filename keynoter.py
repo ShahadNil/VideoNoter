@@ -6,6 +6,8 @@ import time
 import tempfile
 from pytube import YouTube
 import re
+import markdown
+from weasyprint import HTML
 
 #genai.configure(api_key='AIzaSyC6XZZpQZ2uGgmtYakbY2-1wP37r2Kq7WE')
 state = st.session_state
@@ -23,17 +25,11 @@ if 'note_button' not in state:
    state.note_button=None
 if 'done_button' not in state:
    state.done_button= None
-
-
-if 'temp_dir' not in state:
-   state.temp_dir = None
 if 'responses' not in state:
    state.responses = None
-if 'regen_responses' not in state:
-   state.regen_responses = None
-
 file_name= None
 video = None
+
 generation_config = {
   "temperature": 0.2,
   "top_p": 0.95,
@@ -123,6 +119,12 @@ def is_valid_api(api: str):
   else:
     return True
 
+def markdown_to_pdf(markdown_text):
+    html_content = markdown.markdown(markdown_text)
+    with tempfile.NamedTemporaryFile(delete=False, suffix='.pdf') as temp_pdf:
+        pdf_file_path = temp_pdf.name
+        HTML(string=html_content).write_pdf(pdf_file_path)
+    return pdf_file_path
 
 st.set_page_config(page_title="Keynoter", page_icon='📝',layout="wide" )
 api_config = st.empty()
@@ -279,40 +281,27 @@ if 'history' not in state:
 
 chat_session = model.start_chat(history=state.history)
 
-if state.responses == None:
-  generating = st.info("**Your note is generating. Please be patient.**")
-  try:
-    state.responses = chat_session.send_message("Here is the video. Follow instructions you are given and give a detailed note of the whole lecture.")
-    state.history.append({"role":"model", "parts":[state.responses.text]})
-    generating.empty()
-    generation_place = st.empty()
-    with generation_place.container():
-      st.write(state.responses.text)
-    if state.regen_responses != None:
-      os.remove(state.path)
-      genai.delete_file(state.video_obj.name)
-      st.stop()
-  except Exception as e:
-    st.error(e)
-else:
-   pass
 
+generating = st.info("**Your note is generating. Please be patient.**")
+try:
+  state.responses = chat_session.send_message("Here is the video. Follow instructions you are given and give a detailed note of the whole lecture.")
+  state.history.append({"role":"model", "parts":[state.responses.text]})
+  generating.empty()
+  text = state.responses.text
+  st.write(text)
+  pdf_file_path = markdown_to_pdf(text)
+  with open(pdf_file_path, "rb") as f:
+      st.download_button(
+          label="Download PDF",
+          data=f,
+          file_name="converted.pdf",
+          mime="application/pdf"
+      )
 
-regen_place = st.empty()
-with regen_place.container():
-  feedback = st.sidebar.text_area("**Regenerate with Feedback**")
-  regen= st.sidebar.button("Regenerate")
-  if regen and feedback!="":
-    regenerating = st.info("**Your note is regenerating..**")
-    try:
-        state.regen_responses = chat_session.send_message(f"Regenerate the note obeying the feedback from user. Feedback : {feedback}")
-    except Exception as e:
-        st.error(e)
-    os.remove(state.path)
-    genai.delete_file(state.video_obj.name)
-    st.stop()
-  else:
-    st.stop()
-st.write(state.regen_responses)
-
-
+except Exception as e:
+  generating.empty()
+  st.error(e)
+finally:
+  os.remove(state.path)
+  genai.delete_file(state.video_obj.name)
+  st.stop()
