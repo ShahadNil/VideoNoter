@@ -2,3 +2,7 @@ google-generativeai
 pytube
 markdown
 weasyprint
+libpango1.0-0 
+libcairo2 
+libgdk-pixbuf2.0-0 
+libffi-dev
