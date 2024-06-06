@@ -118,12 +118,6 @@ def is_valid_api(api: str):
   else:
     return True
 
-def markdown_to_pdf(markdown_text):
-    html_content = markdown.markdown(markdown_text)
-    with tempfile.NamedTemporaryFile(delete=False, suffix='.pdf') as temp_pdf:
-        pdf_file_path = temp_pdf.name
-        HTML(string=html_content).write_pdf(pdf_file_path)
-    return pdf_file_path
 
 st.set_page_config(page_title="Keynoter", page_icon='📝',layout="wide" )
 api_config = st.empty()
