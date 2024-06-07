@@ -325,8 +325,7 @@ if states.responses != None:
   os.remove(states.md_file_path)
   os.remove(states.path)
   genai.delete_file(states.video_obj.name)
+  st.write(text)
 else:
   os.remove(states.path)
   genai.delete_file(states.video_obj.name)
-
-st.write(text)
