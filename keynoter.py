@@ -297,6 +297,11 @@ if states.responses == None:
     generating.empty()
     text = states.responses.text
     st.write(text)
+    st.sidebar.download_button(
+        label="Download MD",
+        data=text,
+        file_name="KeyNoter.md",
+    )
     pdf_file = converter(text)
     with open(pdf_file, "rb") as file:
       st.sidebar.download_button(
