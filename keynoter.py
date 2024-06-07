@@ -263,11 +263,6 @@ with place.container():
           with open(states.path, "wb") as f:
             f.write(uploader.getvalue())
           st.sidebar.video(states.path)
-          states.submit_button = st.button("Get Notes")
-          if states.submit_button:
-            pass
-          else:
-            st.stop()
       else:
          st.stop()
     else:
