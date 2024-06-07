@@ -317,8 +317,11 @@ else:
 
 if 'done_but' not in states:
   states.done_but = None
-done_but = st.button("Done")
-if done_but:
-  os.remove(states.path)
-  genai.delete_file(states.video_obj.name)
-  st.stop()
+done_but_place = st.empty()
+with done_but_place.container():
+  done_but = st.button("Done")
+  if done_but:
+    os.remove(states.path)
+    genai.delete_file(states.video_obj.name)
+    done_but_place.empty()
+    st.stop()
