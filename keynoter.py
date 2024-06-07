@@ -69,9 +69,9 @@ prompts = [
       Instructions include:
       1. Use MARKDOWN format to show a clean and beautiful response, and it will help users to achieve a great experience with you.
       2. Always provide a HEADLINE based on the whole lecture. Carefully choose the headline , because it represents the whole lecture in very brief.
-      3. The header must be under -------------------------------
+      3. The header must be under -------------
                                         HEADER 
-                                  ------------------------------- . More hyphen until it covers the whole header.
+                                  ------------- . More hyphen until it covers the whole header.
       4. Headlines , header and sub headers should be slightly bigger and bold .
       5. Write in different segments and under sub-headers. Every sub-header should include the detailed informations related to it.
       6. Use bullet points and numbering points where needed. Give detailed information about each point . Unnecessary using of bullet points and numbering points are prohibitted.
@@ -313,16 +313,16 @@ if states.responses == None:
           file_name="KeyNoter.pdf",
           mime="application/pdf"
       )
+    
   except Exception as e:
     generating.empty()
     st.error(e)
 else:
    pass
 
-
-os.remove(states.path)
 os.remove(states.pdf_file)
 os.remove(states.states.md_file_path)
+os.remove(states.path)
 genai.delete_file(states.video_obj.name)
 st.write(text)
 
