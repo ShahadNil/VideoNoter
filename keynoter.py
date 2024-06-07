@@ -7,6 +7,8 @@ import tempfile
 from pytube import YouTube
 import re
 import markdown
+import pypandoc
+
 
 #genai.configure(api_key='AIzaSyC6XZZpQZ2uGgmtYakbY2-1wP37r2Kq7WE')
 states = st.session_state
@@ -63,13 +65,14 @@ prompts = [
       Instructions include:
       1. Use MARKDOWN format to show a clean and beautiful response, and it will help users to achieve a great experience with you.
       2. Always provide a HEADLINE based on the whole lecture. Carefully choose the headline , because it represents the whole lecture in very brief.
-      3. Write in different segments and under sub-headers. Every sub-header should include the detailed informations related to it.
-      4. Use bullet points and numbering points where needed. Give detailed information about each point . Unnecessary using of bullet points and numbering points are prohibitted.
-      5. Use latex formats to show a clear mathemetical equations and answers.
-      6. Write every detail you need to satisfy the task. You can write upto 10000 words , so do not hesitate using more words.. 
-      7. Act as a professional , do not include casual words.
-      8. Take informations from visuals and audio when the visual is related the main topic. If the visuals are not related to the main lecture, ignore it.
-      9. You can provide links (if there) and if it is important to provide the link using markdown [LINK_NAME](LINK)
+      3. The header must be under --- [HEADER] ---
+      4. Write in different segments and under sub-headers. Every sub-header should include the detailed informations related to it.
+      5. Use bullet points and numbering points where needed. Give detailed information about each point . Unnecessary using of bullet points and numbering points are prohibitted.
+      6. Use latex formats to show a clear mathemetical equations and answers.
+      7. Write every detail you need to satisfy the task. You can write upto 10000 words , so do not hesitate using more words.. 
+      8. Act as a professional , do not include casual words.
+      9. Take informations from visuals and audio when the visual is related the main topic. If the visuals are not related to the main lecture, ignore it.
+      10. You can provide links (if there) and if it is important to provide the link using markdown [LINK_NAME](LINK)
 
       Key Responsibilites:
       1. Provide a detailed summary of the whole lecture at first.
@@ -117,7 +120,12 @@ def is_valid_api(api: str):
   else:
     return True
 
-
+def converter(text):
+    with tempfile.NamedTemporaryFile(delete=False, suffix='.md') as temp_md:
+        md_file_path = temp_md.name
+        output = pypandoc.convert_file(md_file_path 'pdf',  outputfile="KeyNoter.pdf", 
+            extra_args=["-V", "geometry:margin=1in" , "--pdf-engine=xelatex"])
+    return "KeyNoter.pdf"
 st.set_page_config(page_title="Keynoter", page_icon='📝',layout="wide" )
 api_config = st.empty()
 with api_config.container():
@@ -281,12 +289,14 @@ if states.responses == None:
     generating.empty()
     text = states.responses.text
     st.write(text)
-    st.sidebar.download_button(
-      label="Download MD",
-      data=text,
-      file_name="Keynoter.md",
-  #    mime="application/pdf"
-  )
+    pdf_file = converter(text)
+    with open(pdf_file, "rb") as file:
+      st.sidebar.download_button(
+          label="Download PDF",
+          data=file,
+          file_name="KeyNoter.pdf",
+          mime="application/pdf"
+      )
   except Exception as e:
     generating.empty()
     st.error(e)
@@ -300,3 +310,5 @@ if done_but:
   os.remove(states.path)
   genai.delete_file(states.video_obj.name)
   st.stop()
+
+  
