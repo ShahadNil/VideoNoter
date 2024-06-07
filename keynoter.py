@@ -321,7 +321,7 @@ else:
    pass
 
 os.remove(states.pdf_file)
-os.remove(states.states.md_file_path)
+os.remove(states.md_file_path)
 os.remove(states.path)
 genai.delete_file(states.video_obj.name)
 st.write(text)
