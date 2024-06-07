@@ -69,9 +69,9 @@ prompts = [
       Instructions include:
       1. Use MARKDOWN format to show a clean and beautiful response, and it will help users to achieve a great experience with you.
       2. Always provide a HEADLINE based on the whole lecture. Carefully choose the headline , because it represents the whole lecture in very brief.
-      3. The header must be under    ---
+      3. The header must be under ----------  
                                     HEADER 
-                                     ---
+                                  ---------- use hyphens until it covers whole header.
       4. Headers , subheaders and headlines should be slightly bigger and bold.    
       5. Write in different segments and under sub-headers. Every sub-header should include the detailed informations related to it.
       6. Use bullet points and numbering points where needed. Give detailed information about each point . Unnecessary using of bullet points and numbering points are prohibitted.
@@ -97,9 +97,7 @@ prompts = [
     """
 ]
 
-      # 3. The header must be under ----------  
-      #                               HEADER 
-      #                             ---------- use hyphens until it covers whole header.
+
 model = genai.GenerativeModel(model_name="gemini-1.5-flash",
                               generation_config=generation_config,
                               safety_settings=safety_settings,
