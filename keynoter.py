@@ -317,6 +317,8 @@ if states.responses == None:
   except Exception as e:
     generating.empty()
     st.error(e)
+    os.remove(states.path)
+    genai.delete_file(states.video_obj.name)
 else:
    pass
 
