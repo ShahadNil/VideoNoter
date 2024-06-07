@@ -125,7 +125,7 @@ def converter(text):
     # Create a temporary Markdown file
     with tempfile.NamedTemporaryFile(delete=False, suffix='.md') as temp_md:
         md_file_path = temp_md.name
-        temp_md.write()  # Write the markdown text to the temp file
+        temp_md.write(text)  # Write the markdown text to the temp file
     
     # Create a temporary PDF file
     pdf_file = tempfile.NamedTemporaryFile(delete=False, suffix='.pdf')
