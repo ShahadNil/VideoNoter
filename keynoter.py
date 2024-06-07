@@ -268,7 +268,6 @@ with place.container():
          st.stop()
     else:
         pass
-
   else:
      st.stop()
  
@@ -303,12 +302,15 @@ if states.responses == None:
     st.write(text)
     states.pdf_file = converter(text)
     with open(states.pdf_file, "rb") as file:
-      st.sidebar.download_button(
+      if st.sidebar.download_button(
           label="Download PDF",
           data=file,
           file_name="KeyNoter.pdf",
           mime="application/pdf"
-      )
+      ):
+         pass
+      else:
+         st.stop()
     
   except Exception as e:
     generating.empty()
@@ -327,3 +329,4 @@ if states.responses != None:
 else:
   os.remove(states.path)
   genai.delete_file(states.video_obj.name)
+st.stop()
