@@ -72,14 +72,13 @@ prompts = [
       3. The header must be under --------
                                    HEADER 
                                   -------- use hyphens until it covers whole header.
-      4. Headlines , header and sub headers should be slightly bigger and bold .
-      5. Write in different segments and under sub-headers. Every sub-header should include the detailed informations related to it.
-      6. Use bullet points and numbering points where needed. Give detailed information about each point . Unnecessary using of bullet points and numbering points are prohibitted.
-      7. Use latex formats to show a clear mathemetical equations and answers.
-      8. Write every detail you need to satisfy the task. You can write upto 10000 words , so do not hesitate using more words.. 
-      9. Act as a professional , do not include casual words.
-      10. Take informations from visuals and audio when the visual is related the main topic. If the visuals are not related to the main lecture, ignore it.
-      11. You can provide links (if there) and if it is important to provide the link using markdown [LINK_NAME](LINK)
+      4. Write in different segments and under sub-headers. Every sub-header should include the detailed informations related to it.
+      5. Use bullet points and numbering points where needed. Give detailed information about each point . Unnecessary using of bullet points and numbering points are prohibitted.
+      6. Use latex formats to show a clear mathemetical equations and answers.
+      7. Write every detail you need to satisfy the task. You can write upto 10000 words , so do not hesitate using more words.. 
+      8. Act as a professional , do not include casual words.
+      9. Take informations from visuals and audio when the visual is related the main topic. If the visuals are not related to the main lecture, ignore it.
+      10. You can provide links (if there) and if it is important to provide the link using markdown [LINK_NAME](LINK)
 
       Key Responsibilites:
       1. Provide a detailed summary of the whole lecture at first.
