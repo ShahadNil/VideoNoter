@@ -28,6 +28,10 @@ if 'done_button' not in states:
    states.done_button= None
 if 'responses' not in states:
    states.responses = None
+if 'md_file_path' not in states:
+   states.md_file_path = None
+if 'pdf_file' not in states:
+   states.pdf_file = None
 file_name= None
 video = None
 
@@ -124,13 +128,13 @@ def is_valid_api(api: str):
     return True
 def converter(text):
     with tempfile.NamedTemporaryFile(delete=False, suffix='.md') as temp_md:
-        md_file_path = temp_md.name
+        states.md_file_path = temp_md.name
         temp_md.write(text.encode('utf-8')) 
     pdf_file = tempfile.NamedTemporaryFile(delete=False, suffix='.pdf')
     pdf_file_path = pdf_file.name
     pdf_file.close()
 
-    pypandoc.convert_file(md_file_path, 'pdf', outputfile=pdf_file_path,
+    pypandoc.convert_file(states.md_file_path, 'pdf', outputfile=pdf_file_path,
                           extra_args=["-V", "geometry:margin=1in", "--pdf-engine=xelatex"])
     
     return pdf_file_path
@@ -237,6 +241,8 @@ with place.container():
                           
                           pass
                         except Exception as e:
+                          res.empty()
+                          downloading.empty()
                           st.error(e)
                           st.stop()
                 except Exception as e:
@@ -280,6 +286,7 @@ if states.video_obj == None:
     wait_for_files_active(states.video_obj)  
     success.empty()
   except Exception as e:
+    success.empty()
     st.error(e)
 else:
     pass
@@ -298,8 +305,8 @@ if states.responses == None:
     generating.empty()
     text = states.responses.text
     st.write(text)
-    pdf_file = converter(text)
-    with open(pdf_file, "rb") as file:
+    states.pdf_file = converter(text)
+    with open(states.pdf_file, "rb") as file:
       st.sidebar.download_button(
           label="Download PDF",
           data=file,
@@ -312,13 +319,10 @@ if states.responses == None:
 else:
    pass
 
-# if 'done_but' not in states:
-#   states.done_but = None
-# done_but_place = st.empty()
-# with done_but_place.container():
-#   done_but = st.button("Done")
-#   if done_but:
+
 os.remove(states.path)
+os.remove(states.pdf_file)
+os.remove(states.states.md_file_path)
 genai.delete_file(states.video_obj.name)
-    # done_but_place.empty()
-    # st.stop()
+st.write(text)
+
