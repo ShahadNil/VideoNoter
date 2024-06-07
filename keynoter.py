@@ -65,7 +65,9 @@ prompts = [
       Instructions include:
       1. Use MARKDOWN format to show a clean and beautiful response, and it will help users to achieve a great experience with you.
       2. Always provide a HEADLINE based on the whole lecture. Carefully choose the headline , because it represents the whole lecture in very brief.
-      3. The header must be under --- [HEADER] ---
+      3. The header must be under ---
+                                HEADER 
+                                  ---
       4. Write in different segments and under sub-headers. Every sub-header should include the detailed informations related to it.
       5. Use bullet points and numbering points where needed. Give detailed information about each point . Unnecessary using of bullet points and numbering points are prohibitted.
       6. Use latex formats to show a clear mathemetical equations and answers.
@@ -119,14 +121,23 @@ def is_valid_api(api: str):
     return False
   else:
     return True
-
 def converter(text):
-    pdf_file_name=tempfile.NamedTemporaryFile(delete=False, suffix='.pdf')
+    # Create a temporary Markdown file
     with tempfile.NamedTemporaryFile(delete=False, suffix='.md') as temp_md:
         md_file_path = temp_md.name
-        output = pypandoc.convert_file(md_file_path, 'pdf',  outputfile=pdf_file_name, 
-            extra_args=["-V", "geometry:margin=1in" , "--pdf-engine=xelatex"])
-    return pdf_file_name
+        temp_md.write(text.encode('utf-8'))  # Write the markdown text to the temp file
+    
+    # Create a temporary PDF file
+    pdf_file = tempfile.NamedTemporaryFile(delete=False, suffix='.pdf')
+    pdf_file_path = pdf_file.name
+    pdf_file.close()  # Close the file so that pypandoc can use it
+
+    # Convert the Markdown file to PDF
+    pypandoc.convert_file(md_file_path, 'pdf', outputfile=pdf_file_path,
+                          extra_args=["-V", "geometry:margin=1in", "--pdf-engine=xelatex"])
+    
+    return pdf_file_path
+
 st.set_page_config(page_title="Keynoter", page_icon='📝',layout="wide" )
 api_config = st.empty()
 with api_config.container():
