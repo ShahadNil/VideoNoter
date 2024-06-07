@@ -302,14 +302,14 @@ if states.responses == None:
         data=text,
         file_name="KeyNoter.md",
     )
-    pdf_file = converter(text)
-    with open(pdf_file, "rb") as file:
-      st.sidebar.download_button(
-          label="Download PDF",
-          data=file,
-          file_name="KeyNoter.pdf",
-          mime="application/pdf"
-      )
+    # pdf_file = converter(text)
+    # with open(pdf_file, "rb") as file:
+    #   st.sidebar.download_button(
+    #       label="Download PDF",
+    #       data=file,
+    #       file_name="KeyNoter.pdf",
+    #       mime="application/pdf"
+    #   )
   except Exception as e:
     generating.empty()
     st.error(e)
