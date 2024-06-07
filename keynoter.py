@@ -122,17 +122,13 @@ def is_valid_api(api: str):
   else:
     return True
 def converter(text):
-    # Create a temporary Markdown file
     with tempfile.NamedTemporaryFile(delete=False, suffix='.md') as temp_md:
         md_file_path = temp_md.name
-        temp_md.write(text)  # Write the markdown text to the temp file
-    
-    # Create a temporary PDF file
+        temp_md.write(text.encode('utf-8')) 
     pdf_file = tempfile.NamedTemporaryFile(delete=False, suffix='.pdf')
     pdf_file_path = pdf_file.name
-    pdf_file.close()  # Close the file so that pypandoc can use it
+    pdf_file.close()
 
-    # Convert the Markdown file to PDF
     pypandoc.convert_file(md_file_path, 'pdf', outputfile=pdf_file_path,
                           extra_args=["-V", "geometry:margin=1in", "--pdf-engine=xelatex"])
     
