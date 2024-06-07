@@ -124,7 +124,7 @@ def converter(text):
     pdf_file_name=tempfile.NamedTemporaryFile(delete=False, suffix='.pdf')
     with tempfile.NamedTemporaryFile(delete=False, suffix='.md') as temp_md:
         md_file_path = temp_md.name
-        output = pypandoc.convert_file(md_file_path, 'pdf',  outputfile=, 
+        output = pypandoc.convert_file(md_file_path, 'pdf',  outputfile=pdf_file_name, 
             extra_args=["-V", "geometry:margin=1in" , "--pdf-engine=xelatex"])
     return pdf_file_name
 st.set_page_config(page_title="Keynoter", page_icon='📝',layout="wide" )
