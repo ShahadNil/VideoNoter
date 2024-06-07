@@ -88,14 +88,15 @@ prompts = [
       4. If the lecture covers different parts , divide them into different segments.
       5. Your main responsibility is to provide a note of the long lecture , which note contains every detail covered in the lecture .
 
-      DO NOT:
-      1. Do not use your words, don't add any information yourself. Use informations covered in the lecture.
-      2. Do not use HTML code to show texts beautiful , you can use MARKDOWN or LATEX .
-      2. Do not respond if the video is not related to any lecture or educational.
-      3. Do not miss any important detail. 
     """
 ]
 
+
+      # DO NOT:
+      # 1. Do not use your words, don't add any information yourself. Use informations covered in the lecture.
+      # 2. Do not use HTML code to show texts beautiful , you can use MARKDOWN or LATEX .
+      # 2. Do not respond if the video is not related to any lecture or educational.
+      # 3. Do not miss any important detail.
 #      3. Do not use bullet or numbering point everywhere. Like a single informative point must be written using bullet point. Otherwise, a information which is needed to be written in detail, that should be written in a short detailed paragraph.
 model = genai.GenerativeModel(model_name="gemini-1.5-pro-latest",
                               generation_config=generation_config,
