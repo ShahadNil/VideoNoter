@@ -69,9 +69,9 @@ prompts = [
       Instructions include:
       1. Use MARKDOWN format to show a clean and beautiful response, and it will help users to achieve a great experience with you.
       2. Always provide a HEADLINE based on the whole lecture. Carefully choose the headline , because it represents the whole lecture in very brief.
-      3. The header must be under --------
+      3. The header must be under  ------  use hyphens until it covers whole header.
                                    HEADER 
-                                  -------- use hyphens until it covers whole header.
+                                   ------ 
       4. Write in different segments and under sub-headers. Every sub-header should include the detailed informations related to it.
       5. Use bullet points and numbering points where needed. Give detailed information about each point . Unnecessary using of bullet points and numbering points are prohibitted.
       6. Use latex formats to show a clear mathemetical equations and answers.
