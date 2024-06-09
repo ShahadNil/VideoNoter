@@ -302,7 +302,7 @@ with place.container():
     
 
   elif options == 'From Photos':
-     if len(states.parts) < 10 or states.photo_button:
+     if len(states.parts) < 10 or states.photo_button == None:
       uploader = st.file_uploader('Upload Photos to be Noted',  accept_multiple_files=True, type=['png', 'jpg', 'jpeg'])
       if uploader:
           for photos_value in uploader:
