@@ -285,7 +285,7 @@ with place.container():
     
 
   elif options == 'Upload Notable Photos':
-     if len(states.parts) < 10 or states.photo_button == None:
+     if len(states.files) < 10 or states.photo_button == None:
       uploader = st.file_uploader('Upload Photos to be Noted',  accept_multiple_files=True, type=['png', 'jpg', 'jpeg'])
       if uploader:
           for photos_value in uploader:
@@ -313,7 +313,7 @@ with place.container():
  
 
 place.empty()
-if states.parts == None:
+if len(states.parts) == 0:
    success = st.warning("**Wait a few moments to process**")
    for file in states.files:
       try:
