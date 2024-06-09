@@ -38,6 +38,9 @@ if 'parts' not in states:
    states.parts =[]
 if 'photo_obj' not in states:
    states.photo_obj = []
+
+if 'photo_button' not in states:
+   states.photo_button = None
 file_name= None
 video = None
 
@@ -211,7 +214,7 @@ with place.container():
 
   options = st.radio("**Select an Option**", ["Upload a video file","Directly from youtube link" , "From Photos"])
   if options == "Directly from youtube link":
-      if states.path=="" and len(states.parts) == 0:
+      if states.path=="" :
           states.video_url = st.text_input("**Enter your Youtube Video URL**")
           states.note_button = st.button("Get Notes")
           if states.video_url !=""  and states.note_button and (states.video_url.startswith("https://www.youtube.com/watch?v=") or states.video_url.startswith("https://youtu.be/")):
@@ -273,7 +276,7 @@ with place.container():
          pass
 
   elif options == "Upload a video file":
-    if states.path=="" and len(states.parts) == 0 and states.submit_button != True:
+    if states.path=="" and states.submit_button != True:
       uploader = st.file_uploader('Upload the lecture video', type=['mp4', 'mkv'])
       if uploader:
           temp_dir = tempfile.mkdtemp(prefix="gemini_videos")
@@ -291,6 +294,7 @@ with place.container():
           except Exception as e:
             success.empty()
             st.error(e)
+            st.stop()
       else:
          st.stop()
     else:
@@ -298,7 +302,7 @@ with place.container():
     
 
   elif options == 'From Photos':
-     if len(states.parts) == 0:
+     if len(states.parts) < 10 or states.photo_button:
       uploader = st.file_uploader('Upload Photos to be Noted',  accept_multiple_files=True, type=['png', 'jpg', 'jpeg'])
       if uploader:
           for photos_value in uploader:
@@ -310,11 +314,11 @@ with place.container():
             photo_obj=upload_to_gemini(photo_path)
             states.parts.append(photo_obj)
             states.photos.append(photo_path)
-          photo_button = st.button('Get Notes')
-          if photo_button:
+          states.photo_button = st.button('Get Notes')
+          if states.photo_button:
             pass
           else: 
-              st.stop()
+            st.stop()
 
       else:
           st.stop()
@@ -328,10 +332,8 @@ with place.container():
  
 
 
-
-
 if 'history' not in states:
-   states.history= [{"role":"user", "parts":[states.parts]}]
+   states.history= [{"role":"user", "parts":states.parts}]
 
 chat_session = model.start_chat(history=states.history)
 
@@ -364,9 +366,13 @@ else:
    pass
 
 if states.responses != None:
+  if len(states.photos) !=0:
+     for photo_paths in states.photos:
+        os.remove(photo_paths)
+  else:
+       os.remove(states.path)
   os.remove(states.pdf_file)
   os.remove(states.md_file_path)
-  os.remove(states.path)
   genai.delete_file(states.video_obj.name)
   st.write(states.responses.text)
 else:
