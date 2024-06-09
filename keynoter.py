@@ -38,7 +38,8 @@ if 'parts' not in states:
    states.parts =[]
 if 'photo_obj' not in states:
    states.photo_obj = []
-
+if 'files' not in states:
+   states.files = []
 if 'photo_button' not in states:
    states.photo_button = None
 file_name= None
@@ -212,8 +213,8 @@ with place.container():
 
   st.markdown('<h2 class="centered-title">Note Your Lecture</h2>', unsafe_allow_html=True) 
 
-  options = st.radio("**Select an Option**", ["Upload a video file","Directly from youtube link" , "From Photos"])
-  if options == "Directly from youtube link":
+  options = st.radio("**Select an Option**", ["Upload a Video File","Directly from Youtube Link" , 'Upload Notable Photos'])
+  if options == "Directly from Youtube Link":
       if states.path=="" :
           states.video_url = st.text_input("**Enter your Youtube Video URL**")
           states.note_button = st.button("Get Notes")
@@ -259,18 +260,7 @@ with place.container():
                         st.stop()
                     
                     st.sidebar.video(states.path)
-                    place.empty()
-                    success = st.warning("**Wait a few moments to process the video**")
-                    try:
-                      video_obj =  upload_to_gemini(states.path)
-                      states.parts.append(video_obj)
-                      wait_for_files_active(video_obj)  
-                      success.empty()
-                    except Exception as e:
-                        success.empty()
-                        st.error(e)
-                        st.stop()
-                
+                    states.files.append(states.path)
 
           else:
             st.stop()
@@ -278,7 +268,7 @@ with place.container():
          pass
 
 
-  elif options == "Upload a video file":
+  elif options == "Upload a Video File":
     if states.path=="" and states.submit_button != True:
       uploader = st.file_uploader('Upload the lecture video', type=['mp4', 'mkv'])
       if uploader:
@@ -287,24 +277,14 @@ with place.container():
           with open(states.path, "wb") as f:
             f.write(uploader.getvalue())
           st.sidebar.video(states.path)
-          place.empty()
-          try:
-            success = st.warning("**Wait a few moments to process the video**")
-            video_obj =  upload_to_gemini(states.path)
-            states.parts.append(video_obj)
-            wait_for_files_active(video_obj)
-            success.empty()
-          except Exception as e:
-            success.empty()
-            st.error(e)
-            st.stop()
+          states.files.append(states.path)
       else:
          st.stop()
     else:
         pass
     
 
-  elif options == 'From Photos':
+  elif options == 'Upload Notable Photos':
      if len(states.parts) < 10 or states.photo_button == None:
       uploader = st.file_uploader('Upload Photos to be Noted',  accept_multiple_files=True, type=['png', 'jpg', 'jpeg'])
       if uploader:
@@ -314,16 +294,12 @@ with place.container():
             with open(photo_path, 'wb') as f:
                 f.write(photos_value.getvalue())
             st.sidebar.image(photo_path,use_column_width=True)
-            photo_obj=upload_to_gemini(photo_path)
-            states.parts.append(photo_obj)
-            states.photos.append(photo_path)
+            states.files.append(photo_path)
           states.photo_button = st.button('Get Notes')
           if states.photo_button:
-            place.empty()
             pass
           else: 
             st.stop()
-
       else:
           st.stop()
 
@@ -334,6 +310,55 @@ with place.container():
   else:
      st.stop()
  
+
+          # place.empty()
+          # try:
+          #   success = st.warning("**Wait a few moments to process the video**")
+          #   video_obj =  upload_to_gemini(states.path)
+          #   states.parts.append(video_obj)
+          #   wait_for_files_active(video_obj)
+          #   success.empty()
+          # except Exception as e:
+          #   success.empty()
+          #   st.error(e)
+          #   st.stop()
+# place.empty()
+# success = st.warning("**Wait a few moments to process the video**")
+# try:
+#   video_obj =  upload_to_gemini(states.path)
+#   states.parts.append(video_obj)
+#   wait_for_files_active(video_obj)  
+#   success.empty()
+# except Exception as e:
+#     success.empty()
+#     st.error(e)
+#     st.stop()
+
+          #   photo_obj=upload_to_gemini(photo_path)
+          #   states.parts.append(photo_obj)
+            
+          # states.photo_button = st.button('Get Notes')
+          # if states.photo_button:
+          #   place.empty()
+          #   pass
+          # else: 
+          #   st.stop()
+place.empty()
+if states.files == None:
+   success = st.warning("**Wait a few moments to process**")
+   for file in states.files:
+      try:
+        obj = upload_to_gemini(states.path)
+        states.parts.append(obj)
+        if states.photos == None:
+          wait_for_files_active(obj)  
+      except Exception as e:
+         success.empty()
+         st.error(e)
+         st.stop()
+   success.empty()
+else:
+   pass
 
 
 if 'history' not in states:
