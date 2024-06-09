@@ -213,7 +213,7 @@ with place.container():
 
   st.markdown('<h2 class="centered-title">Note Your Lecture</h2>', unsafe_allow_html=True) 
 
-  options = st.radio("**Select an Option**", ["Upload a Video File","Directly from Youtube Link" , 'Upload Notable Photos'])
+  options = st.radio("**Select an Option to Note**", ["Upload a Video File","Directly from Youtube Link" , 'Upload Notable Photos'])
   if options == "Directly from Youtube Link":
       if states.path=="" :
           states.video_url = st.text_input("**Enter your Youtube Video URL**")
@@ -371,7 +371,7 @@ if states.responses != None:
        os.remove(states.path)
   os.remove(states.pdf_file)
   os.remove(states.md_file_path)
-  genai.delete_file(states.video_obj.name)
+  genai.delete_file(states.video_obj.name) ########### Here to change
   st.write(states.responses.text)
 else:
   os.remove(states.path)
