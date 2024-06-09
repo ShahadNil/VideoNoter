@@ -295,6 +295,7 @@ with place.container():
                 f.write(photos_value.getvalue())
             st.sidebar.image(photo_path,use_column_width=True)
             states.files.append(photo_path)
+            states.photos.append(photo_path)
           states.photo_button = st.button('Get Notes')
           if states.photo_button:
             pass
@@ -316,7 +317,7 @@ if states.files == None:
    success = st.warning("**Wait a few moments to process**")
    for file in states.files:
       try:
-        obj = upload_to_gemini(states.path)
+        obj = upload_to_gemini(file)
         states.parts.append(obj)
         if states.photos == None:
           wait_for_files_active(obj)  
