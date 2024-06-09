@@ -319,7 +319,7 @@ if len(states.parts) == 0:
       try:
         obj = upload_to_gemini(file)
         states.parts.append(obj)
-        if states.photos == None:
+        if len(states.photos) == 0:
           wait_for_files_active(obj)  
       except Exception as e:
          success.empty()
