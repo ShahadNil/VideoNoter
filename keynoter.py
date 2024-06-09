@@ -237,43 +237,46 @@ with place.container():
                         retrive.empty()
                         st.error("**No suitable video resolution found.**")
                         st.stop()
-                            
-                    if video:
-                        try:
-                          video_title = yt.title 
-                          sanitized_title = sanitize_title(video_title)
-                          states.path = f"{sanitized_title}.mp4"
-                          downloading = st.success("**Downloading on progress..**")
-                          video.download(filename=states.path)
-                          res.empty()
-                          downloading.empty()
-                          st.sidebar.video(states.path)
-                          place.empty()
-                          try:
-                            success = st.warning("**Wait a few moments to process the video**")
-                            video_obj =  upload_to_gemini(states.path)
-                            states.parts.append(video_obj)
-                            wait_for_files_active(video_obj)  
-                            success.empty()
-                            pass
-                          except Exception as e:
-                            success.empty()
-                            st.error(e)
-                            st.stop()
-
-                        except Exception as e:
-                          res.empty()
-                          downloading.empty()
-                          st.error(e)
-                          st.stop()
                 except Exception as e:
+                    retrive.empty()
                     st.error(e)
                     st.stop()
+
+
+                if video:
+                    video_title = yt.title 
+                    sanitized_title = sanitize_title(video_title)
+                    states.path = f"{sanitized_title}.mp4"
+                    downloading = st.success("**Downloading on progress..**")
+                    try:
+                      video.download(filename=states.path)
+                      res.empty()
+                      downloading.empty()
+                    except Exception as e:
+                        res.empty()
+                        downloading.empty()
+                        st.error(e)
+                        st.stop()
+                    
+                    st.sidebar.video(states.path)
+                    place.empty()
+                    success = st.warning("**Wait a few moments to process the video**")
+                    try:
+                      video_obj =  upload_to_gemini(states.path)
+                      states.parts.append(video_obj)
+                      wait_for_files_active(video_obj)  
+                      success.empty()
+                    except Exception as e:
+                        success.empty()
+                        st.error(e)
+                        st.stop()
                 
+
           else:
             st.stop()
       else:
          pass
+
 
   elif options == "Upload a video file":
     if states.path=="" and states.submit_button != True:
