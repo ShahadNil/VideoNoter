@@ -316,6 +316,7 @@ with place.container():
             states.photos.append(photo_path)
           states.photo_button = st.button('Get Notes')
           if states.photo_button:
+            place.empty()
             pass
           else: 
             st.stop()
