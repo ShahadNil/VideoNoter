@@ -311,38 +311,6 @@ with place.container():
      st.stop()
  
 
-          # place.empty()
-          # try:
-          #   success = st.warning("**Wait a few moments to process the video**")
-          #   video_obj =  upload_to_gemini(states.path)
-          #   states.parts.append(video_obj)
-          #   wait_for_files_active(video_obj)
-          #   success.empty()
-          # except Exception as e:
-          #   success.empty()
-          #   st.error(e)
-          #   st.stop()
-# place.empty()
-# success = st.warning("**Wait a few moments to process the video**")
-# try:
-#   video_obj =  upload_to_gemini(states.path)
-#   states.parts.append(video_obj)
-#   wait_for_files_active(video_obj)  
-#   success.empty()
-# except Exception as e:
-#     success.empty()
-#     st.error(e)
-#     st.stop()
-
-          #   photo_obj=upload_to_gemini(photo_path)
-          #   states.parts.append(photo_obj)
-            
-          # states.photo_button = st.button('Get Notes')
-          # if states.photo_button:
-          #   place.empty()
-          #   pass
-          # else: 
-          #   st.stop()
 place.empty()
 if states.files == None:
    success = st.warning("**Wait a few moments to process**")
