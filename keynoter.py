@@ -313,7 +313,7 @@ with place.container():
  
 
 place.empty()
-if states.files == None:
+if states.parts == None:
    success = st.warning("**Wait a few moments to process**")
    for file in states.files:
       try:
