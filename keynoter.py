@@ -408,12 +408,17 @@ if states.responses != None:
      for photo_paths in states.photos:
         os.remove(photo_paths)
   else:
-       os.remove(states.path)
+       for i in states.files:
+          os.remove(i)
   os.remove(states.pdf_file)
   os.remove(states.md_file_path)
-  genai.delete_file(states.video_obj.name) ########### Here to change
+  for i in states.parts:
+    genai.delete_file(i.name) 
   st.write(states.responses.text)
 else:
-  os.remove(states.path)
-  genai.delete_file(states.video_obj.name)
+  for i in states.files:
+    os.remove(i)
+  for i in states.parts:
+    genai.delete_file(i.name)
+
 st.stop()
