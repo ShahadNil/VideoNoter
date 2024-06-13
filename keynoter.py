@@ -81,7 +81,7 @@ prompts = [
       2. Always provide a HEADLINE based on the whole lecture. Carefully choose the headline , because it represents the whole lecture in very brief.
       3. The header must be under ----------  
                                     HEADER 
-                                  ---------- use hyphens until it covers whole header.
+                                  ---------- use hyphens until it covers whole header. Do not use ' ` ' use hyphen ' - '.
       4. Headers , subheaders and headlines should be slightly bigger and bold.    
       5. Write in different segments and under sub-headers. Every sub-header should include the detailed informations related to it.
       6. Use bullet points and numbering points where needed. Give detailed information about each point . Unnecessary using of bullet points and numbering points are prohibitted.
@@ -116,7 +116,7 @@ prompts = [
       2. Always provide a HEADLINE based on the whole photos. Carefully choose the headline , because it represents the whole in very brief.
       3. The header must be under ----------  
                                     HEADER 
-                                  ---------- use hyphens until it covers whole header.
+                                  ---------- use hyphens until it covers whole header.Do not use ' ` ' use hyphen ' - '.
       4. Headers , subheaders and headlines should be slightly bigger and bold.    
       5. Write in different segments and under sub-headers. Every sub-header should include the detailed informations related to it.
       6. Use bullet points and numbering points where needed. Give detailed information about each point . Unnecessary using of bullet points and numbering points are prohibitted.
