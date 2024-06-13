@@ -107,7 +107,7 @@ prompts = [
 
     """,
 
-    """You are a domain expert to note and summarize any educational photos.
+    """You are a domain expert to note any educational photos.
       You will be tasked with one or multiple photos on any topic. Your expertise will help in noting whole photos. 
       Some key responsibilites and instructions are given to you, follow them to provide your best.
 
@@ -129,8 +129,8 @@ prompts = [
 
       Key Responsibilites:
       1. Provide a detailed summary of the photo informations at first.
-      2. Find out the topics covered in tphotos.
-      3. Write down important key notes of each topic. It should be detailed.
+      2. Find out the topics covered in photos.
+      3. Write down important notes of each topic. It should be detailed and expanded.
       4. If the photo informations covers different parts , divide them into different segments.
       5. Your main responsibility is to provide a note of informations included in the photo , which note contains every detail covered in the photos.
    
@@ -348,7 +348,7 @@ with place.container():
 
 place.empty()
 if len(states.photos) != 0:
-  model = genai.GenerativeModel(model_name="gemini-1.5-flash-latest",
+  model = genai.GenerativeModel(model_name="gemini-1.5-pro-latest",
                                 generation_config=generation_config,
                                 safety_settings=safety_settings,
                                 system_instruction=prompts[1])
