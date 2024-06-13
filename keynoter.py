@@ -81,15 +81,14 @@ prompts = [
       2. Always provide a HEADLINE based on the whole lecture. Carefully choose the headline , because it represents the whole lecture in very brief.
       3. The header must be under ----------  
                                     HEADER 
-                                  ---------- use hyphens until it covers whole header. Do not use ' ` ' use hyphen ' - '.
-      4. Headers , subheaders and headlines should be slightly bigger and bold.    
-      5. Write in different segments and under sub-headers. Every sub-header should include the detailed informations related to it.
-      6. Use bullet points and numbering points where needed. Give detailed information about each point . Unnecessary using of bullet points and numbering points are prohibitted.
-      7. Use latex formats to show a clear mathemetical equations and answers.
-      8. Write every detail you need to satisfy the task. You can write upto 10000 words , so do not hesitate using more words.. 
-      9. Act as a professional , do not include casual words.
-      10. Take informations from visuals and audio when the visual is related the main topic. If the visuals are not related to the main lecture, ignore it.
-      11. You can provide links (if there) and if it is important to provide the link using markdown [LINK_NAME](LINK)
+                                  ---------- use hyphens until it covers whole header. Do not use ' ` ' use hyphen ' - '. 
+      4. Write in different segments and under sub-headers. Every sub-header should include the detailed informations related to it.
+      5. Use bullet points and numbering points where needed. Give detailed information about each point . Unnecessary using of bullet points and numbering points are prohibitted.
+      6. Use latex formats to show a clear mathemetical equations and answers.
+      7. Write every detail you need to satisfy the task. You can write upto 10000 words , so do not hesitate using more words.. 
+      8. Act as a professional , do not include casual words.
+      9. Take informations from visuals and audio when the visual is related the main topic. If the visuals are not related to the main lecture, ignore it.
+      10. You can provide links (if there) and if it is important to provide the link using markdown [LINK_NAME](LINK)
 
 
       DO NOT:
@@ -116,16 +115,15 @@ prompts = [
       2. Always provide a HEADLINE based on the whole photos. Carefully choose the headline , because it represents the whole in very brief.
       3. The header must be under ----------  
                                     HEADER 
-                                  ---------- use hyphens until it covers whole header.Do not use ' ` ' use hyphen ' - '.
-      4. Headers , subheaders and headlines should be slightly bigger and bold.    
-      5. Write in different segments and under sub-headers. Every sub-header should include the detailed informations related to it.
-      6. Use bullet points and numbering points where needed. Give detailed information about each point . Unnecessary using of bullet points and numbering points are prohibitted.
-      7. Use latex formats to show a clear mathemetical equations and answers.
-      8. Write every detail you need to satisfy the task. You can write upto 10000 words , so do not hesitate using more words.
-      9. Act as a professional , do not include casual words.
-      10. Take informations from every part of photos when it is related the main topic. If any information is irrelevant to the main topic, ignore it.
-      11. You can provide links (if there) and if it is important to provide the link using markdown [LINK_NAME](LINK)
-      12. If you get multiple photos which are not related to each other, deny it and explain why you denied.
+                                  ---------- use hyphens until it covers whole header.Do not use ' ` ' use hyphen ' - '.  
+      4. Write in different segments and under sub-headers. Every sub-header should include the detailed informations related to it.
+      5. Use bullet points and numbering points where needed. Give detailed information about each point . Unnecessary using of bullet points and numbering points are prohibitted.
+      6. Use latex formats to show a clear mathemetical equations and answers.
+      7. Write every detail you need to satisfy the task. You can write upto 10000 words , so do not hesitate using more words.
+      8. Act as a professional , do not include casual words.
+      9. Take informations from every part of photos when it is related the main topic. If any information is irrelevant to the main topic, ignore it.
+      10. You can provide links (if there) and if it is important to provide the link using markdown [LINK_NAME](LINK)
+      11. If you get multiple photos which are not related to each other, deny it and explain why you denied.
 
       Key Responsibilites:
       1. Provide a detailed summary of the photo informations at first.
