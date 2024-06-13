@@ -378,7 +378,7 @@ chat_session = model.start_chat(history=states.history)
 if states.responses == None:
   generating = st.info("**Your note is generating. Please be patient.**")
   try:
-    states.responses = chat_session.send_message("Here is the video. Follow instructions you are given and give a detailed note of the whole lecture.")
+    states.responses = chat_session.send_message("Follow instructions you are given and give a detailed and expanded note.")
     states.history.append({"role":"model", "parts":[states.responses.text]})
     generating.empty()
     text = states.responses.text
