@@ -90,7 +90,7 @@ prompts = [
       9. Act as a professional , do not include casual words.
       10. Take informations from visuals and audio when the visual is related the main topic. If the visuals are not related to the main lecture, ignore it.
       11. You can provide links (if there) and if it is important to provide the link using markdown [LINK_NAME](LINK)
-      12. Use code snippet markdown if any code should be noted.
+
 
       DO NOT:
       1. Do not use your words, don't add any information yourself. Use informations covered in the lecture.
