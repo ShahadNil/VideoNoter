@@ -140,7 +140,7 @@ prompts = [
 ]
 
 
-model = genai.GenerativeModel(model_name="gemini-1.5-flash-latest",
+model = genai.GenerativeModel(model_name="gemini-1.5-pro-0514",
                               generation_config=generation_config,
                               safety_settings=safety_settings,
                               system_instruction=prompts[0])
@@ -346,7 +346,7 @@ with place.container():
 
 place.empty()
 if len(states.photos) != 0:
-  model = genai.GenerativeModel(model_name="gemini-1.5-pro-latest",
+  model = genai.GenerativeModel(model_name="gemini-1.5-pro-0514",
                                 generation_config=generation_config,
                                 safety_settings=safety_settings,
                                 system_instruction=prompts[1])
