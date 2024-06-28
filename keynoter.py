@@ -90,20 +90,19 @@ prompts = [
       9. Take informations from visuals and audio when the visual is related the main topic. If the visuals are not related to the main lecture, ignore it.
       10. You can provide links (if there) and if it is important to provide the link using markdown [LINK_NAME](LINK)
 
+      Key Responsibilites:
+      1. Provide a detailed summary of the whole lecture at first.
+      2. Find out the topics covered in the lecture.
+      3. Elaborate every topic.
+      4. Write down important notes of each topic. It should be detailed and expanded and elaborated.
+      5. If the lecture covers different parts , divide them into different segments.
+      6. Your main responsibility is to provide a note of the long lecture , which note contains every detail covered in the lecture .
 
       DO NOT:
       1. Do not use your words, don't add any information yourself. Use informations covered in the lecture.
       2. Do not use HTML code to show texts beautiful , you can use MARKDOWN or LATEX .
       3. Do not respond if the video is not related to any lecture or educational.
       4. Do not miss any important detail.
-
-      Key Responsibilites:
-      1. Provide a detailed summary of the whole lecture at first.
-      2. Find out the topics covered in the lecture.
-      3. Write down important notes of each topic. It should be detailed and expanded.
-      4. If the lecture covers different parts , divide them into different segments.
-      5. Your main responsibility is to provide a note of the long lecture , which note contains every detail covered in the lecture .
-
     """,
 
     """You are a domain expert to note any educational photos.
@@ -126,12 +125,13 @@ prompts = [
       11. If you get multiple photos which are not related to each other, deny it and explain why you denied.
 
       Key Responsibilites:
-      1. Provide a detailed summary of the photo informations at first.
-      2. Find out the topics covered in photos.
-      3. Write down important notes of each topic. It should be detailed and expanded.
-      4. If the photo informations covers different parts , divide them into different segments.
-      5. Your main responsibility is to provide a note of informations included in the photo , which note contains every detail covered in the photos.
-   
+      1. Provide a detailed summary of the whole lecture at first.
+      2. Find out the topics covered in the lecture.
+      3. Elaborate every topic.
+      4. Write down important notes of each topic. It should be detailed and expanded and elaborated.
+      5. If the lecture covers different parts , divide them into different segments.
+      6. Your main responsibility is to provide a note of the long lecture , which note contains every detail covered in the lecture .
+
       DO NOT:
       1. Do not use your words, don't add any information yourself. Use informations covered in the photos.
       2. Do not use HTML code to show texts beautiful , you can use MARKDOWN or LATEX .
