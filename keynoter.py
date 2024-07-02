@@ -88,7 +88,7 @@ prompts = [
       7. Write every detail you need to satisfy the task. You can write upto 10000 words , so do not hesitate using more words.. 
       8. Act as a professional , do not include casual words.
       9. Take informations from visuals and audio when the visual is related the main topic. If the visuals are not related to the main lecture, ignore it.
-      10. You can provide links (if there) and if it is important to provide the link using markdown [LINK_NAME](LINK)
+      10.The video can be of any language.
 
       Key Responsibilites:
       1. Provide a detailed summary of the whole lecture at first.
