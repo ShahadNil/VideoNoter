@@ -255,7 +255,7 @@ with place.container():
           if states.video_url !=""  and states.note_button and (states.video_url.startswith("https://www.youtube.com/watch?v=") or states.video_url.startswith("https://youtu.be/")):
                 try:
                     retrive = st.success("**Checking your video**")
-                    yt = YouTube(states.video_url, use_po_token=True)
+                    yt = YouTube(states.video_url)
                     if yt.streams.filter(res="720p", progressive=True).first() is not None:
                         video = yt.streams.filter(res="720p", progressive=True).first()
                         retrive.empty()
