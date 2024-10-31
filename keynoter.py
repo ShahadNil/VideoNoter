@@ -78,7 +78,7 @@ prompts = [
 
       Instructions include:
       1. Use MARKDOWN format to show a clean and beautiful response, and it will help users to achieve a great experience with you.
-      2. Always provide a HEADLINE based on the whole lecture. Carefully choose the headline , because it represents the whole lecture in very brief.
+      2. Always provide a HEADLINE based on the whole lecture. Carefully choose the headline , because it represents the whole lecture in very brief. Dont write anything before headline
       3. The header must be in bold and slightly bigger. and  
                                   ----------  
                                     HEADER 
