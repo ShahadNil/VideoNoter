@@ -48,7 +48,7 @@ video = None
 generation_config = {
   "temperature": 0.2,
   "top_p": 0.95,
-  "top_k": 21,
+  "top_k": 31,
   "max_output_tokens": 8192,
 }
 
