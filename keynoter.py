@@ -4,7 +4,7 @@ import google.generativeai as genai
 import os
 import time
 import tempfile
-from pytube import YouTube
+from pytubefix import YouTube
 import re
 import markdown
 import pypandoc
