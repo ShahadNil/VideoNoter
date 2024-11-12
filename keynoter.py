@@ -10,7 +10,6 @@ import markdown
 import pypandoc
 
 
-#genai.configure(api_key='AIzaSyC6XZZpQZ2uGgmtYakbY2-1wP37r2Kq7WE')
 states = st.session_state
 if 'video_obj' not in states:
    states.video_obj = None 
